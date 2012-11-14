@@ -11,6 +11,9 @@
     {% if page.description %}<meta name="description" content="{{ page.description }}">{% endif %}
     <meta name="author" content="{{ site.author.name }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="clippy.css" media="all">
+   
+    
     <!-- HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -114,12 +117,21 @@
       </div>
 
       <footer>
-        <p>&copy; {{ site.author.name }} 2012 
-          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
-          and <a href="http://github.com/dhulihan/hooligan" target="_blank">The Hooligan Theme</a>
+        <p>&copy; {{ site.author.name }} 2012 - Proudly powered by JekyllBootstrap</a>
         </p>
       </footer>
     </div> <!-- /container -->
     {% include JB/analytics %}
+
+    <script src="clippy.min.js"></script>
+
+    <!-- Init script -->
+    <script type="text/javascript">
+        clippy.load('Clippy', function(agent) {
+            agent.play('GetAttention');
+            agent.show();
+        });
+    </script>
+
   </body>
 </html>

@@ -69,21 +69,13 @@
 	.n8 { float:left;background:#aaa url(c64charset.gif) no-repeat -128px -48px scroll; width:16px; height:16px; }
 	.n9 { float:left;background:#aaa url(c64charset.gif) no-repeat -144px -48px scroll; width:16px; height:16px; }
 
-	.colon { float:left;background:#aaa url(c64charset.gif) no-repeat -160px -48px scroll; width:16px; height:16px; }
-	.semicolon { float:left;background:#aaa url(c64charset.gif) no-repeat -176px -48px scroll; width:16px; height:16px; }
-	.equal { float:left;background:#aaa url(c64charset.gif) no-repeat -208px -48px scroll; width:16px; height:16px; }
 	.underscore { float:left;background:#aaa url(c64charset.gif) no-repeat -240px -80px scroll; width:16px; height:16px; }
 	.question { float:left;background:#aaa url(c64charset.gif) no-repeat -240px -48px scroll; width:16px; height:16px; }
 	.att { float:left;background:#aaa url(c64charset.gif) no-repeat -16px -32px scroll; width:16px; height:16px; }
 	.slash { float:left;background:#aaa url(c64charset.gif) no-repeat -240px -32px scroll; width:16px; height:16px; }
 	.comma { float:left;background:#aaa url(c64charset.gif) no-repeat -192px -32px scroll; width:16px; height:16px; }
 	.quot { float:left;background:#aaa url(c64charset.gif) no-repeat -32px -32px scroll; width:16px; height:16px; }
-	.dollar { float:left;background:#aaa url(c64charset.gif) no-repeat -64px -32px scroll; width:16px; height:16px; }
-	.singlequot { float:left;background:#aaa url(c64charset.gif) no-repeat -112px -32px scroll; width:16px; height:16px; }
-	.amp { float:left;background:#aaa url(c64charset.gif) no-repeat -96px -32px scroll; width:16px; height:16px; }
-	.percent { float:left;background:#aaa url(c64charset.gif) no-repeat -80px -32px scroll; width:16px; height:16px; }
 	.star { float:left;background:#aaa url(c64charset.gif) no-repeat -160px -32px scroll; width:16px; height:16px; }
-	.plus { float:left;background:#aaa url(c64charset.gif) no-repeat -176px -32px scroll; width:16px; height:16px; }
 	.space { float:left;background:#aaa url(c64charset.gif) no-repeat -0px -32px scroll; width:16px; height:16px; }
 	.OE { float:left;background:#aaa url(c64charset.gif) no-repeat -0px -48px scroll; width:16px; height:16px; }
 	.AA { float:left;background:#aaa url(c64charset.gif) no-repeat -240px -128px scroll; width:16px; height:16px; }
