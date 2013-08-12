@@ -1,0 +1,27 @@
+{% include _head.html %}
+
+<div id="universe">
+	
+	<div id="header">
+		<div id="title">
+			<!-- <a href="/blog/">blog</a> /  -->archive
+		</div>
+		<div id="navigation">
+			<a href="/">Moi</a>
+			<a href="/blog.html" class="selected">Blog</a>
+			<a href="/informatique.html">Informatique</a>
+			<a href="/photographie.html">Photographie</a>
+			<a href="/musique.html">Musique</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<div class="post-world">
+		{{ content }}
+	</div>
+	
+	{% include sidebar.html %}
+	
+</div>
+
+{% include _foot.html %}
