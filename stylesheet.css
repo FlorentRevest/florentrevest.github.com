@@ -71,8 +71,17 @@ html {
 }
 
 body {
-  background: url(../bg-body.jpg);
+  background: url(bg-body.jpg);
   font: 16px/1.5 'Colaborate-ThinRegular', 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', FreeSans, sans-serif;
+}
+
+.home-body {
+  background: url(bg-home.jpg) no-repeat center center fixed;
+  font: 16px/1.5 'Colaborate-ThinRegular', 'HelveticaNeue-Light', 'Helvetica Neue', Helvetica, Arial, 'Liberation Sans', FreeSans, sans-serif;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  -webkit-background-size: cover;
+  background-size: cover;
 }
 
 a {
@@ -647,7 +656,7 @@ blockquote {
 /* @group #error-* */
 
 #error-404 {
-  background: url("../404.png") center center no-repeat;
+  background: url("404.png") center center no-repeat;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -668,6 +677,7 @@ blockquote {
   left: 50%;
   margin-top: -90px;
   margin-left: -228px;
+  text-shadow: rgb(204, 204, 204) 1px 1px;
 }
   #about .avatar {
     position: absolute;
