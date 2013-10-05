@@ -9,7 +9,7 @@ En revanche, mon travail de programmation et de documentation concernera la conc
 
 En attendant, voici la première photo du montage :
 
-<a href="http://pix.toile-libre.org/upload/original/1380366834.jpg"><img src="http://pix.toile-libre.org/upload/original/1380366834.jpg" style="width: 100%; height: auto;"></a>
+<a href="http://pix.toile-libre.org/upload/original/1380366834.jpg"><img src="http://pix.toile-libre.org/upload/original/1380366834.jpg" style="width: 100%; height: auto;"></img></a>
 
 La plaque de plastique à droite sera directement fixée au X525 et servira de support au Raspberry Pi, au MPU6050 (l'acceleromètre) et au Pololu Maestro (interface avec les ESCs).
 
