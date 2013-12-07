@@ -22,6 +22,7 @@ Ce que l'on a
 =============
 
 De nombreux capteurs permettent d'obtenir l'attitude du système :
+
 - Les accéléromètres, mesurant l'accélération linéaire sur trois axes.
 - Les gyroscopes, fournissant une position angulaire relative sur les mêmes axes.
 - Les magnétomètres, mesurant le champ magnétique et permettant de déduire la position du nord à la manière d'une boussole.
@@ -39,6 +40,7 @@ Comment passer de l'un à l'autre ?
 ==================================
 
 Le coeur du problème se trouve dans le passage des valeurs brutes du MPU6050 à des angles habituels. En effet les valeurs brutes ont trois problèmes :
+
 - premièrement, elles comportent du bruit c'est-à-dire que le signal n'est pas stable
 - deuxièmement, elles n'ont pas d'unité, ce sont des valeurs qui ne correspondent à rien de concret
 - pour finir, ces données d'accélération et de rotation ne sont pas combinées en trois angles comme nous le souhaitons.
@@ -80,6 +82,7 @@ La première phase du système de contrôle, l'acquisition de données, est donc
 
 Sources
 =======
+
 - [Euler angles](http://en.wikipedia.org/wiki/Euler_angles)
 - [Attitude control](http://en.wikipedia.org/wiki/Aircraft_attitude)
 - [MPU6050 Triple Axis Accelerometer & Gyro Breakout](http://www.geeetech.com/wiki/index.php/MPU-6050_Triple_Axis_Accelerometer_%26_Gyro_Breakout)
