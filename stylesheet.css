@@ -346,6 +346,28 @@ span.fancybox {
 
 /* @end */
 
+/* @group #navigation_home */
+
+#navigation_home {
+  font-size: 15px;
+  float: right;
+  margin: 20px 0px 20px 0px;
+}
+  #navigation_home a {
+    color: #FFF;
+    margin: 0px 15px;
+    text-decoration: none;
+  }
+    #navigation_home a:hover {
+      border: none;
+      text-decoration: none;
+      border-bottom: 2px solid #F8F8F8;
+    }
+    #navigation_home a.selected {
+      color: #999;
+      border-bottom: 2px solid #999;
+    }
+    
 /* @end */
 
 /* @group Thumbnails */
@@ -672,7 +694,7 @@ blockquote {
   width: 500px;
   height: 170px;
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 50%;
   margin-top: -90px;
   margin-left: -228px;
@@ -702,7 +724,7 @@ blockquote {
     #about .info .label {
       text-align: right;
       padding-right: 5px;
-      padding-bottom: 10px;
+      padding-bottom: 5px;
     }
       #about .info .label a {
         color: #666;
