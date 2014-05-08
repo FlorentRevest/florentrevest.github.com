@@ -32,7 +32,7 @@ Pour cette raison, on fait toujours appel à des "ESCs" (electronic speed contro
 
 On simplifie déjà le problème, car envoyer un signal PWM depuis les GPIOs du Raspberry Pi n'est plus chose impossible, mais en générer quatre est déjà chose plus ardue. Certains projets utilisent directement les GPIOs mais n'y faisant pas totalement confiance j'ai préféré acheter un circuit externe de gestion de servomoteurs, le Pololu Micro Maestro qui déchargera la framboise d'une lourde tâche. Le choix du maestro s'est fait grace à sa connectique USB, mais Adafruit propose d'excellent circuits i2c faisant la même chose.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1387030267.jpg" style="width: 100px; height: auto;"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1387030267.jpg" style="width: 150px; height: auto;"></img></center>
 
 Le code gérant le Pololu Maestro est situé dans la classe Motors du code du système de vol hébergé sur GitHub et utilise la libusb pour gérer la vitesse de chaque moteur comme prévu par les spécifications de Pololu.
 
