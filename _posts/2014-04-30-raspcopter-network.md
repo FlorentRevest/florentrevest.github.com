@@ -1,70 +1,70 @@
 ---
 layout: post
-title: Raspcopter - Network communication
+title: Raspcopter - Communication réseau
 ---
 
 <img src="http://pix.toile-libre.org/upload/original/1399577725.jpg" style="width: 100%; height: auto;"></img>
 
-So far, the problems encountered during the development of the Raspcopter concerned only the embedded flight system on the Raspberry Pi. Then, more recently we have seen the ground control station. Those two projects are already equipped with several control functions, but without any interactive way to communicate between each other. The aim of this article is to explain the choices made about the ground <-> quadcopter communication and their implementation.
+Jusqu'à présent, les problématiques rencontrées lors du développement du Raspcopter concernaient uniquement le système de vol embarqué au RaspberryPi. Puis plus récemment nous avons vu la station de contrôle au sol du projet. Ces deux derniers projets sont donc déjà dotés de plusieurs fonctions de contrôle, mais sans aucun moyen interactif de communiquer l'un avec l'autre. L'enjeu de cet article est d'expliquer les choix de communication sol-quadcopter qui ont été faits ainsi que leur implémentation.
 
-What we want
-============
+Ce que l'on veut
+================
 
-Firstly, it is important to remind the main objective of the project: to understand the inner working of a quadcopter flight system. Therefore, network-related issues are not the priority and ease of development and deployment is sought in priority. Yet, no concessions can be made :
+Tout d'abord il est important de rappeller l'objectif principal du projet : comprendre le fonctionnement du système de vol d'un quadcopter, les problématiques liées au réseau ne sont donc évidemment pas la priorité et la facilité de développement et de déploiement est recherchée en priorité. Pourtant, il ne faut pas faire de concessions :
 
-The flight controls remain critical data that must necessarily be carried safely and quickly. When flying, packet loss or excessive latency do not forgive.
+Les commandes de vol restent des données critiques qui doivent nécessairement transiter de manière sûre et rapide. Lors d'un virage, une perte de paquets ou une latence trop importante ne pardonnent pas.
 
-We also seek some modularity in order to get access to more things than simple flight controls.
+On cherche également une certaine modularité de manière à pouvoir contrôler davantage de choses que les simples commandes de vol.
 
-Finally, the quadcopter is probably going to fly far from the ground control station, so it is necessary to use a long-range communication.
+Pour finir, le quadcopter étant probablement amené à voler loin de la station de contrôle au sol, il est nécessaire d'utiliser une communication de longue portée.
 
-What we have
-============
+Ce que l'on a
+=============
 
-At this point, the Raspberry Pi has almost all GPIOs (except i2c) and one USB port free (since the second is occupied by the Pololu Maestro). We must find a means of communication exploiting those ports.
+À ce point, le RaspberryPi ne comporte plus qu'un port USB libre puisque le second est occupé par le Pololu Maestro et tous les GPIOs sauf l'i2c. Il faut donc trouver un moyen de communication exploitant ces ports.
 
-The Raspberry Pi works under Raspbian (or at least [a very lightweight hardfloat version](https://www.linuxsystems.it/raspbian-wheezy-armhf-raspberry-pi-minimal-image/)) therefore under a full Linux operating system. Our quadcopter thus enjoys all the benefits of this kernel, especially in terms of device drivers. The choice of communication methods is significantly expanded compared to other operating systems like ChibiOS RT, FreeRTOS or RTEMS.
+Ne l'oublions pas, le RaspberryPi fonctionne sous Raspbian (ou tout du moins, [une version hardfloat très allégée](https://www.linuxsystems.it/raspbian-wheezy-armhf-raspberry-pi-minimal-image/)) et donc sous un système d'exploitation Linux complet. Notre quadcopter bénéficie donc de tous les avantages de ce dernier, particulièrement en matière de pilotes de périphériques. Le choix des méthodes de communication est donc considérablement élargi par rapport à un autre système d'exploitation comme ChibiOS RT, FreeRTOS ou RTEMS.
 
-At the other end of the communication, the quadcopter should talk with a laptop also running a standard Linux distribution and/or an Android smartphone.
+À l'autre bout de la communication, le quadcopter devrait échanger avec un PC portable tournant également sous une distribution Linux standard et/ou avec un smartphone Android.
 
-How can we get from what we have to what we want ?
-==================================================
+Comment passer de l'un à l'autre
+================================
 
-Several choices are presented to us, here are the main ones:
+Plusieurs choix de méthodes se présentent à nous, en voici les principaux :
 
-The first, most obvious, as used by most "normal" quadcopters is an analog communication from a standard quadcopter remote control. This choice is interesting in that it uses the usual material for a quadcopter and that the scope is excellent, but it offers no modularity since it generally has one channel by rotation angle and no way to pass other data in the opposite direction... Moreover, the processing of the analog signal on the Raspberry Pi is a huge task and does not seem easily feasible.
+La première, la plus évidente car utilisée par la plupart des quadcopters "normaux" est une communication analogique depuis une télécommande standard de quadcopter. Ce choix est intéressant dans la mesure où il utilise du matériel habituel pour un quadcopter et que la portée est excellente, mais il n'offre aucune modularité puisqu'il ne possède généralement qu'un canal par angle de rotation et pas de moyen de faire transiter des données autres dans le sens inverse... De plus le traitement du signal analogique sur le Raspberry Pi serait une tâche énorme et ne semble pas facilement envisageable.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1399562740.jpg" style="width: 200px; height: auto;"></img></center>
 
-A slightly high level solution would be to use a wireless communication module such as the XBee, these small chips become fairly standard and are already much more modular and easy to implement. They also offer sufficient scope for a drone project. This solution therefore seems quite optimal, however it requires the purchase of expensive components on the RPi and on the Laptop, not to mention the Android smartphone...
+Une solution un peu plus haut niveau consisterait à utiliser un module de communication sans fil comme le XBee, ces petites puces devenues assez standards sont déjà beaucoup plus modulaires et faciles à implémenter. Elles offrent également des portées suffisantes pour un projet de drone. Cette solution semble donc assez optimale si ce n'est qu'elle nécessite l'achat de composants couteux sur le RPi comme sur le PC portable, sans parler du smartphone Android...
 
 <center><img src="http://pix.toile-libre.org/upload/original/1399562728.jpg" style="width: 200px; height: auto;"></img></center>
 
-Finally, the solution is probably already all around you... it's WiFi. The benefits are numerous. First, and this is not negligible: the cost. But also the ease of development and deployment. There is also the modularity of the wireless communication, for exemple we can keep an SSH connection if something goes wrong, we could also possibly stream a webcam easily, which is quite attractive. But questions still remain unanswered: what about the scope of the WiFi, the presence of a router and the speed and security of data ?
+Finalement, la solution retenue se trouve déjà probablement tout autour de vous... c'est le Wifi. Les avantages sont très nombreux. Premièrement, et ce n'est pas négligeable : le coût. Mais également la facilité de développement et de déploiement. Ainsi que la modularité de la communication Wifi, en effet la possibilité de garder une liaison SSH en cas de pépin ou de pouvoir éventuellement plus tard créer un stream vidéo d'une webcam facilement est très attrayante. Mais des questions restent encore en suspend : quid de la portée du Wifi, de la présence d'un routeur, ainsi que de la rapidité et la sûreté des données ?
 
 <center><img src="http://pix.toile-libre.org/upload/original/1399562752.png" style="width: 200px; height: auto;"></img></center>
 
-The network physical deployment
+Le déploiement physique du réseau
+=================================
+
+Le Wifi permet de n'effectuer aucune modification matérielle au niveau du PC portable et du téléphone, en revanche le choix de la clef présente sur le Raspberry Pi est plus important. Par chance, un vieux mediacenter attendait sous la poussière de mon placard que quelqu'un vienne lui débrancher sa clef wifi USB longue portée. Une antenne est donc présente sur le quadcopter pour bénéficier d'une communication sur de longues distances. Un test de portée est peut-être à prévoir à l'avenir. Idéalement la clef devrait permettre la création d'un hostpot wifi sur le quadcopter lui-même, mais malheureusement cette fonctionnalité n'est pas supportée par le driver Linux du chipset utilisé par le Raspcopter.
+
+Le système de vol devra donc se connecter lui-même à un émetteur Wifi au sol. Deux possibilités seront présente: soit le téléphone émettra un réseau tethering auquel se connecteront le quadcopter et le PC portable à la manière d'un réseau local, soit ce sera le PC portable qui émettra le wifi.
+
+Sur les appareils au sol, un logiciel client sera responsable de maintenir la communication avec le serveur présent sur le quadcopter.
+
+Les détails de la communication
 ===============================
 
-WiFi allows us to avoid any changes on the laptop and smartphone, however the choice of the key on the Raspberry Pi is important. Luckily, an old mediacenter was waiting under the dust of my closet for someone to pull its long range wifi USB key. An antenna is present on the quadcopter to receive a communication over long distances. A range test gave decent results. Ideally the key should generate a wifi hotspot on the quadcopter itself, but unfortunately this feature is not supported by the chipset's Linux driver.
+Selon le modèle OSI, les couches basses du réseau sont déjà assurées. Mais en ce qui concerne le protocole, des choix sont encore à faire :
 
-The flight system will have to connect itself to a ground based WiFi transmitter. Two possibilities are present: either the phone will emit a tethering network on which the quadcopter and laptop connect, or it will be the laptop that will emit the wifi.
-
-On ground based devices, a client software will be responsible for maintaining communication with the quadcopter's server.
-
-The details of the communication
-================================
-
-According to the OSI model, the network's lower layers are already insured. But with regard to the protocol, choices are still to be done :
-
-Starting with deciding between a TCP or UDP basis. TCP communications have the advantage of being very safe (all the packets arrive in sequence) but heavier and slower than UDP, which does not offer such safety, but is much faster. Finally the best of both worlds was found in a network library named ENet. Firstly designed for video games development, this library implements a UDP protocol but keeps major features of TCP. The result in an excellent compromise between the two.
+À commencer par trancher entre une base TCP ou UDP. Une communication TCP a l'avantage d'être très sûre (tous les paquets arrivent et dans l'ordre) mais plus lourde et lente qu'une UDP qui elle n'offre pas ces contrôles, mais est beaucoup plus rapide. Finalement, le meilleur des deux mondes a été retrouvé dans une bibliothèque réseau nommée ENet. Premièrement destinée au développement de jeux vidéos, cette bibliothèque implémente un protocole UDP, mais gardant les fonctionnalités majeures de TCP. Le résultat est donc un excellent compromis entre les deux.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1399563468.jpg" style="width: 600px; height: auto;"></img></center>
 
-The libenet is used on the quadcopter's server and clients in order to support a specific protocol. Each packet of this protocol is composed by a header opcode byte which defines the operation to be performes followed by a variable length containing the data to be transferred. The list of opcodes is in the header of the Network class, available on GitHub.
+La libenet est donc utilisée sur le quadcopter et les clients au sol pour supporter un protocole spécifique. Chaque paquet de ce protocole est composé d'un octet entête d'opcode qui définit l'opération à effectuer puis d'une longueur variable contenant les données à transférer. La liste des opcodes se trouve dans l'header de la classe Network du code disponible sur GitHub.
 
-For example the command to change the value of the PID controller from the ground is named SET_PID_VALUES and corresponds to the hexadecimal opcode 0x04. The associated packet starts with a byte (char) equal to 4 and 9 floats containing the three values of the three PIDs.
+Par exemple la commande permettant de modifier les valeurs du contrôleur PID du quadcopter depuis le sol est nommée SET_PID_VALUES et correspond à l'opcode hexadécimal 0x04. Le paquet associé commencera donc par un octet (char) valant 4 puis 9 floats contenant les trois valeurs des trois PIDs.
 
 Sources
 =======

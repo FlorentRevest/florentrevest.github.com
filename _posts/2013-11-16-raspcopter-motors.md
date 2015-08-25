@@ -1,40 +1,40 @@
 ---
 layout: post
-title: Raspcopter - Engines control
+title: Raspcopter - Contrôle des moteurs
 ---
 
 <img src="http://pix.toile-libre.org/upload/original/1386413694.jpg" style="width: 100%; height: auto;"></img>
 
-The latest article gave the Raspcopter a powerful angular self-regulation algorithm. Yet, one detail was ignored and not the least, the "Feedback" shown at the bottom of the PID controller scheme ensuring the closed loop function. This feedback is of course the engines speed management, the subject of today's article.
+Le dernier article a doté le système de vol du Raspcopter d'un algorithme puissant d'autorégulation angulaire. Pourtant, un détail a été passé sous silence et non des moindres: le "Feedback" représenté en bas du schéma du contrôleur PID assurant la fonction de boucle fermée. Ce retour sur erreur est bien sûr la gestion des vitesses des moteurs, l'objet de l'article d'aujourd'hui.
 
-What we want
-============
+Ce que l'on veut
+=============
 
-Like any flying machine, our little drone must have a sufficiently large vertical thrust force in order to release it of gravity. This strength is given by our old friend Newton in his third law of reciprocal actions. The propellers of the quadcopter push air downwards and by reaction, the drone is pushed up, it's as simple as that.
+Comme tout objet volant, notre petit drone doit bénéficier d'une force de poussée verticale suffisamment grande pour le libérer de la gravité. Cette force c'est notre vieil ami Newton qui nous la donne dans sa troisième loi des actions réciproques. Les hélices du quadcopter poussent l'air vers le bas et par réaction, le drone est poussé vers le haut c'est aussi simple que ça.
 
-But the drone introduced a constraint: the propeller must be driven at a fairly substantial rate and by rather light engines. A type of motors solves this problem, the "brushless" motors.
+Mais le drone introduit une contrainte : ces hélices doivent être entraînées à une vitesse assez conséquente et par des moteurs assez légers. Un type de moteur répond à cette problématique, les moteurs "sans balais" ou plus couramment appelés brushless.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1386704254.jpg"></img></center>
 
-Their operating principle is quite simple, above you can see thre coils electricaly powered one after the other to create a magnetic field that will move the magnet at the center, carrying the propeller's axis. The Raspcopter engines use 12 coils but the principle is still based on the alternation of three of them, it is also for this reason that it is sufficient to reverse two wires randomly in order to change the direction of rotation.
+Leur principe de fonctionnement est assez simple, ci dessus vous pouvez observer trois bobines (légendées coils) alimentées électriquement les unes après les autres pour créer un champ magnétique qui mettra en mouvement l'aiment du centre, portant l'axe tenant l'hélice. Les moteurs du Raspcopter utilisent 12 bobines mais le principe reste fondé sur l'alternance de trois d'entre elles, c'est d'ailleurs pour cette raison qu'il suffit d'inverser deux fils au hasard pour modifier le sens de rotation du moteur.
 
-What we have
-============
+Ce que l'on a
+==========
 
-We want to controle these motors from the Raspberry Pi with the minimum latency. The Raspberry Pi has several interfaces, mainly GPIOs and USB. The first idea seemingly most natural would be to directly control the motors from the GPIOs pine but it is in fact impossible because the bobbin exchange rate would never be sufficient and the energy delivered would also be far too low.
+On souhaite contrôler ces moteurs depuis le Raspberry Pi avec le minimum de latence possible. Le Raspberry Pi dispose de plusieurs interfaces, principalement les GPIOs et l'USB. La première idée semblant la plus naturelle serait de contrôler les moteurs depuis les pins GPIOs mais c'est en fait impossible car la fréquence de changement de bobines ne serait jamais suffisante et l'énergie délivrée serait elle aussi bien trop faible.
 
-How can we get from what we have to what we want ?
-==================================================
+Comment passer de l'un à l'autre ?
+============================
 
-For this reason, we have to use "ESCs" (Electronic Speed Controllers) placed before each motor, these electronic circuits are fed by two cables from the Lipo battery and receive a PWM (Pulse Width Modulation) signal from three wires in exactly the same maneer as Servomotors. The output of these controllers is made of three wires welded to the brushless motor and alternating the coils power supply as seen previously. The chosen ESC is the 20A UBEC model of HobbyKing.
+Pour cette raison, on fait toujours appel à des "ESCs" (electronic speed controlers) placés en amont de chaque moteur, ces circuits électroniques sont alimentés par deux câbles provenant de la batterie LiPo et reçoivent des données PWM (pulse width modulation, c'est à dire codées sur des longueurs de pulsations électriques) depuis trois fils, exactement de la même manière qu'un servomoteur. En sortie de ces contrôleurs, trois câbles sont soudés au moteur brushless et alternent l'alimentation des bobines comme vu précédement. L'ESC choisi est un modèle 20A UBEC de HobbyKing.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1387029010.jpg"></img></center>
 
-We already simplified the problem because sending a PWM signal from the Raspberry Pi's GPIOs is no longer impossible. However, generating four PWM is a harder thing. Some projects still use the GPIOs directly however I don't have full confidence in it so I preferred to buy an external servo circuit management: the Pololu Micro Maestro which unloads the Raspberry from this heavy task. I chose the Maestro because of its USB connection, however Adafruit also offers excellent i2c circuits doing the same thing.
+On simplifie déjà le problème, car envoyer un signal PWM depuis les GPIOs du Raspberry Pi n'est plus chose impossible, mais en générer quatre est déjà chose plus ardue. Certains projets utilisent directement les GPIOs mais n'y faisant pas totalement confiance j'ai préféré acheter un circuit externe de gestion de servomoteurs, le Pololu Micro Maestro qui déchargera la framboise d'une lourde tâche. Le choix du maestro s'est fait grace à sa connectique USB, mais Adafruit propose d'excellent circuits i2c faisant la même chose.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1387030267.jpg" style="width: 150px; height: auto;"></img></center>
 
-The code managing the Pololu Maestro is in the "Motor" class of the flight system code hosted on GitHub, it uses libusb to manage the speed of each motor as required by the specifications of Pololu.
+Le code gérant le Pololu Maestro est situé dans la classe Motors du code du système de vol hébergé sur GitHub et utilise la libusb pour gérer la vitesse de chaque moteur comme prévu par les spécifications de Pololu.
 
 Sources
 =======

@@ -4,8 +4,8 @@
 		<img class="avatar" src="http://gravatar.com/avatar/bdd848257fce7eb848b301b2ee6e0f9e.jpg?s=50" alt="" />
 		<div class="description">
 			<p>
-                Computer science student at INSA Toulouse, I'm crazy about programming and free softwares.
-                <br><br>
+            Étudiant à l'INSA Toulouse, je suis passionné de programmation et de logiciels libres.
+            <br><br>
                 <i class="fa fa-envelope-square fa-fw"></i><td><script type="text/javascript">document.write("<n uers=\"znvygb:erirfgsyb@tznvy.pbz\">erirfgsyb@tznvy.pbz</n>".replace(/[a-zA-Z]/g, function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));</script></td>
                 <i class="fa fa-github-square fa-fw"></i><a href="https://github.com/FlorentRevest">GitHub</a>
                 <i class="fa fa-linkedin-square fa-fw"></i><a href="https://fr.linkedin.com/pub/florent-revest/bb/842/653">LinkedIn</a> <br>
@@ -16,14 +16,14 @@
 		    </p>
 	    </div>
 	<div class="section recent-articles">
-		<h2>Recent Articles</h2>
+		<h2>Articles Récents</h2>
 		<dl class="labels">
 			{% for post in site.posts limit:8 %}
 				<dt>{{ post.date | date: "%d %b" }}</dt>
-				<dd><a href="{{ post.url }}" class="title">{{ post.title }}</a></dd>
+                <dd><a href="{{ site.baseurl }}{{ post.url }}" class="title">{{ post.title }}</a></dd>
 			{% endfor %}
 			<dt>&nbsp;</dt>
-			<dd><a href="/archive.html">See more &rarr;</a></dd>
+            <dd><a href="{{ site.baseurl }}/archive.html">Tout voir &rarr;</a></dd>
 		</dl>
 	</div>
 </div>

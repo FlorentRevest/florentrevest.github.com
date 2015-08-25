@@ -1,14 +1,14 @@
 ---
 layout: post
-title: Raspcopter - First crash
+title: Raspcopter - Premier crash
 ---
 
 <img src="http://pix.toile-libre.org/upload/original/1404331500.png" style="width: 100%; height: auto;"></img>
 
-The project progresses! Indeed, the code base is almost finished, logging functions are expected to come later but this is not a priority for now. This means that the rather technical articles that I have written so far should now let room for a serie of more practical, visual and general-public-oriented articles. But as we can suspect, the transition from theory to practice is always accompanied by small unexpected effects.
+Mine de rien le projet Raspcopter avance, la base de code est même quasiment finie. Des fonctions de logging seraient à prévoir plus tard mais, ce n'est pas une priorité du tout, c'est même du luxe. Les articles plutôt techniques que j'ai pu écrire jusqu'à présent devraient donc maintenant faire place à une série d'articles davantage pratiques, visuels et grand public. Mais comme on s'en doute, le passage de la théorie à la pratique s'accompagne toujours de petits effets inattendus.
 
-First test means invariably first crash. And that's exactly what happened recently, when I added a non-null integral gain to the PID parameters of the quadcopter.
+Qui dit premiers tests du drone dit immanquablement premiers crashs du drone. Et c'est exactement ce qui s'est produit dernièrement lorsque j'ai introduit un gain intégral non nul aux paramètres PID du quadcopter.
 
-The UAV was in operation for more than an hour and half, the integral variables that contain the sum of the angles errors thus contained gigantic values. They suddenly found themselves multiplied by a gain. This produces a maximum engine speed and the drone overturned immediately before breaking propellers. Further investigations on the behavior of the integral gain will therefor be needed.
+Le drone fonctionnait depuis plus d'une heure et demie, les variables intégrales qui contiennent la somme des erreurs d'angles dans le temps contenaient donc des valeurs gigantesques qui se sont soudainement retrouvées multipliées par un gain. Ceci a produit une vitesse de moteur maximale et le drone s'est immédiatement retourné avant de casser des hélices. Des investigations plus approfondies sur le comportement du gain intégral s'annoncent donc nécessaire.
 
-Fortunately, only the propeller were damaged, but the new parts order will delay the project. This time I took care of ordering 20 propellers ahead of the inevitable next crashes !
+Heureusement seules les hélices ont été endommagées, mais la commande de nouvelles pièces va faire prendre du retard au projet. J'ai donc pris cette fois le soin de commander 20 hélices pour avoir de l'avance sur les inévitables prochains crashs.

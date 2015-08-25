@@ -1,75 +1,76 @@
 ---
 layout: post
-title: Raspcopter - PID (Proportional Integral Derivative) controller
+title: Raspcopter - Régulateur PID (Proportionnel Intégral Dérivé)
 ---
 <img src="http://pix.toile-libre.org/upload/original/1386360951.jpg" style="width: 100%; height: auto;"></img>
+Au cours de l'article précédent nous avons entamé l'étude du système de vol d'un quadcopter. La première étape consistait à récupérer l'attitude c'est-à-dire la position angulaire du drone dans l'air. Il s'agit aujourd'hui d'exploiter ces mesures d'angles dans la perspective de stabiliser le quadcopter autour de valeurs spécifiées par la station de contrôle au sol.
 
-In the previous article, we started studying a quadcopter flight system. The first step was to recover the attitude, that is to say the angular position of the drone in the air. Today we want to exploit these angle measurements in order to stabilize the quadcopter around values specified by the ground control station.
+Ce que l'on veut
+================
 
-What we want
-============
+S'il est vrai que le drone doit savoir rester parallèle au sol lorsqu'aucune commande du sol n'est reçue, il se doit également de savoir pivoter sur ses axes pour pouvoir se déplacer. Ces rotations sont spécifiées par la "station de contrôle au sol", un logiciel tournant sur un ordinateur portable et traitant les données d'un joystick. La position du joystick traduit un angle voulu qui est ensuite transportée par wifi et interprété par le Raspberry Pi.
 
-While it is true that the drone must be able to remain parallel to the ground when no command is received, it also must know how to rotate on its axis in order to move. These rotations are specified by the "ground control station", a software running on a laptop and processing the data of a joystick. The joystick position reflects a desired angle which is the transported by WiFi and interepreted by the Raspberry Pi.
+On souhaiterait avoir un vol fluide malgré les changements brutaux de position du joystick, tout en gardant un contrôle sur la réponse des moteurs plus ou moins aggressive.
 
-We would like to have a fluid flight despite the sudden changes in position of the joystick, while keeping control on the more or less aggressive engines response.
+Ce que l'on a
+=============
 
-What we have
-============
-
-When the quadcopter confronts the three Euler angles measured by the accelerometer as seen in the previous article and the desired angles sent by the ground station, the difference between these two data produce a sudden *error*. If the engine speed is changed at the same time as the occurence of the error, such as as the square wave graph below: The powerful and sudden impulse risks at best to exceed the desired angle and go back indefinitely creating instability, at worst to overthrow the quadcopter immediately. It is therefore understandable that it is necessary to have an algorithm "smoothing" the transitions.
+Lorsque le quadcopter confronte les trois angles d'euler mesurés par l'accéléromètre comme vu dans l'article précédent et les angles voulus envoyés par la station au sol la différence entre ces deux données produit une *erreur* soudaine. Si les vitesses des moteurs sont changées en même temps que l'apparition de l'erreur, comme selon le signal carré du graphique ci-dessous. L'impulsion puissante et soudaine risque: au mieux de dépasser l'angle souhaité et de revenir en arrière indéfiniment créant une instabilité, au pire de renverser immédiatement le quadcopter. On comprend donc bien qu'il est nécessaire d'avoir un algorithme "lissant" cette transition.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1381347244.jpg"></img></center>
 
-How can we get from what we have to what we want ?
-==================================================
+Comment passer de l'un à l'autre ?
+==================================
 
-This problem is pervasive in engineering and requires the use of a "regulator", we will discuss and use the PID controller (for Proportional, Integral, Derivative).
+Ce problème est omniprésent en ingénierie et nécessite l'utilisation d'un "régulateur", nous allons évoquer et utiliser le régulateur PID (pour Proportionnel, Intégral, Dérivé).
 
-In our quadcopter project, measurements being made on three angles, it is necessary to use three different PID controllers. This algorithm takes as input the difference between the desired angle and the measured angle, for example when the ground sends nothing this error is the orientation of the UAV relative to the ground. Mathematical operations are applied to these errors and determine the speed that should be given to the four motors.
+Dans le cadre de notre quadcopter, les mesures se faisant sur trois angles il est nécessaire d'utiliser trois régulateurs PID différents. Cet algorithme prend pour entrée la différence entre l'angle voulu et l'angle mesuré, par exemple lorsque la télécommande au sol n'envoie rien cette erreur correspond au défaut de parallélisme au sol. Des opérations mathématiques sont appliquées à ces trois erreurs et déterminent les vitesses à envoyer aux quatre moteurs.
 
-*The PID controller is an algorithm that takes an error as its input and returns a linear combination of this error with the integral of this error and the derivative of this error.* **That's it.**
+*Le régulateur PID est un algorithme qui prend en entrée une erreur. Il fait la somme d'une multiplication de cette erreur, d'une intégrale de cette erreur et d'une dérivée de cette erreur, puis renvoie une nouvelle valeur.* **C'est tout.**
 
-One quickly sees the benefits of this algorithm: first it is very simple to understand and implement. But we also know that it is extremely reliable, this controller is the most used in the world and is found everywhere... even in the flush of your toilet !
+On perçoit vite les avantages de cet algorithme: tout d'abord il est très simple à comprendre et à implémenter. Mais il faut également savoir qu'il est extrêmement fiable, ce régulateur est le plus utilisé au monde et on le retrouve partout... jusque dans la chasse de vos toilettes !
+
+Ce système est dit "en boucle fermée" car il s'auto régule : lorsque l'erreur d'angle est grande les moteurs concernés accélèrent et l'erreur se réduit. La sortie de l'algorithme influe donc sur son entrée.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1386350513.jpg"></img></center>
 
-Proportional
-============
+Proportionnel
+=============
 
-The proportional term is obtained very simply by multiplying the error by a constant named "proportional gain". The greater the gain is, the greater the response speed is, but it may be unstable. The smaller the gain is, the more the response speed is "soft" and likely to be ineffective. It is important to find a good intermediate between these two extremes.
+Le terme proportionnel s'obtient très simplement par la multiplication de l'erreur par une constante nommée "gain proportionnel". Plus le gain est grand plus la vitesse de réponse est rapide et risque d'être instable. Plus le gain est faible plus la vitesse de réponse est "molle" et risque d'être inefficace. Il s'agit de trouver une bonne valeur intermédiaire entre ces deux extrêmes.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1386351053.png"></img></center>
 
-Here we can see that a proportional gain (Kp) that is too large results in a significant overshoot of the desired angle (the blue reference signal).
+Ici on voit qu'un gain proportionnel (Kp) trop grand résulte en un dépassement significatif de l'angle recherché (le signal de référence bleu).
 
-Integral
+Intégral
 ========
 
-Unlike a simple proportional control system, the PID controller takes into account the history of angular errors. For this, the integral term is introduced, it is the sum of all the errors accumulated over time multiplied by a constant, the "integral gain" Ki.
+Contrairement à un simple système de contrôle proportionnel, le régulateur PID tient compte de l'historique des erreurs angulaires. Pour cela le terme intégral est introduit, il représente la somme de toutes les erreurs accumulées dans le temps multiplié par une constante "gain intégral" Ki.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1386353656.png"></img></center>
 
-The integral gain directly affects the height (and therefore the number) of the target value overshoots. Too low gain is problematic in certain situations such as when the wind is too strong. However a too high gain causes an oscilation around the desired angle.
+Le gain intégral influe directement sur la hauteur (et par conséquent le nombre) de dépassement de la valeur cible. Un trop faible gain est problématique dans certaines situations comme lorsque le vent est trop fort. En revanche un gain trop grand provoque une oscillation autour de l'angle voulu.
 
-Derivative
-==========
+Dérivé
+======
 
-The derivative term is sometimes called "accelerator" since it can compress the response time. It is obtained by substracting the current and previous errors multiplied by the derivative gain. This term, however, is to be taken lightly because it is very sensitive to data noise.
+Le terme dérivé est parfois nommé "l'accélérateur" puisqu'il permet de compresser dans le temps la réponse. Il s'obtient par la soustraction de l'erreur actuelle et de l'erreur précédente multipliée par le gain dérivé. Ce terme est cependant à prendre avec des pincettes, car il est très sensible au bruit de données.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1386353681.png"></img></center>
 
-Once is not a custom, chart allows us to better understand the impact of the gain.
+Une fois n'est pas coutume, un graphique nous permet de mieux comprendre l'impact du gain.
 
-And then ?
+Et après ?
 ==========
 
-Once the code of the PID controller implemented (the very simple PID class is available on github) it is to determine the three gains of each controller. As every quadcopter has special features, there is no universal PID constants, however the determination of these values is not random either.
+Une fois le code du régulateur PID implémenté (la très simple classe PID disponible sur le code github) il s'agit de déterminer les trois gains de chaque régulateur. Comme chaque quadcopter a des caractéristiques particulières il n'existe pas de constantes PID universelles, cependant la détermination de ces valeurs ne relève pas non plus du hasard.
 
-First, it should be noted that a rapid determination method, called "Ziegler and Nichols method" exists and provides correct Ki and Kd from the only value of Kp. The gains can then be adjusted more precisely based on parameters seen above.
+Tout d'abord, il faut noter qu'une méthode de détermination rapide, nommée "méthode de Ziegler et Nichols" existe et permet d'obtenir des Ki et Kd corrects à partir de la seule valeur de Kp. Les gains peuvent ensuite être ajustés en fonction des paramètres vus ci-dessus.
 
-Moreover, a quadcopter (unlike a tricopter of Hexacopter) is almost symmetrical, so the pitch and roll PID's gains should be similar.
+Par ailleurs, un quadcopter (contrairement à un tricopter ou hexacopter) est à peu de choses près symétrique, les constantes des PIDs pitch et roll sont donc similaires ce qui fait gagner du temps.
 
-Finally, it is important to note that for security reasons the testing of these PIDs is never done in real conditions outside. By firmly hanging the quadcopter to a bar parallel to an axis of rotation, we are able to block the rotation of the other angles and work on one PID at a time.
+Pour finir, il est important de noter que pour des raisons de sécurité évidentes l'expérimentation de ces PIDs ne se fait jamais en conditions réelles en exterieur. En accrochant solidement le quadcopter à une barre parallèle à un axe de rotation on est en mesure de bloquer la rotation des autres angles et de travailler sur un seul PID à la fois.
 
 Sources
 =======

@@ -339,7 +339,7 @@ span.fancybox {
 /* @end */
 
 .flag {
-    background: url('/fr-flag.png') 0 1px no-repeat;
+    background: url('/fr/en-flag.png') 0 1px no-repeat;
     padding-left: 40px;
     font-size: 15px;
     color: #838383 !important;

@@ -1,12 +1,12 @@
 <div class="post-paginator">
 	{% if paginator.total_pages > paginator.page %}
-		<a href="/page{{ paginator.next_page }}/" class="older">&larr; older</a>
+		<a href="/{{ site.baseurl }}page{{ paginator.next_page }}/" class="older">&larr; plus ancien</a>
 	{% endif %}
 	{% if paginator.page > 1 %}
 		{% if paginator.previous_page == 1 %}
-			<a href="/" class="newer">newer &rarr;</a>
+			<a href="{{ site.baseurl }}/" class="newer">plus récent &rarr;</a>
 		{% else %}
-			<a href="/page{{ paginator.previous_page }}" class="newer">newer &rarr;</a>
+			<a href="{{ site.baseurl }}/page{{ paginator.previous_page }}" class="newer">plus récent &rarr;</a>
 		{% endif %}
 	{% endif %}
 </div>

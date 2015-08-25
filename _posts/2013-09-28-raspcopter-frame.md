@@ -1,16 +1,16 @@
 ---
 layout: post
-title: Raspcopter - Frame building
+title: Raspcopter - Construction du cadre
 ---
 
 <a href="http://pix.toile-libre.org/upload/original/1380366834.jpg"><img src="http://pix.toile-libre.org/upload/original/1380366834.jpg" style="width: 100%; height: auto;"></img></a>
 
-After two months of unbearable waiting, the package of the quadcopter parts ordered from HobbyKing was finally delivered. I started to build the X525 v3 frame with the Brushless motors FC 28-22 Outrunner 1200kv. I may flash the ESC 20A UBEC HobbyKing with the famous SimonK firmware before soldering the engines (however the procedure is delicate so uncertain). This whole assembly phase that is common to all quadcopters is already well documented, so I won't detail those steps on this blog.
+Après deux mois d'attente insoutenable, le colis des pièces du quadcopter commandées chez HobbyKing a fini par être livré. J'ai commencé à monter le cadre X525 v3 avec les moteurs Brushless FC 28-22 Outrunner 1200kv. Je flasherai peut être les ESC 20A UBEC HobbyKing avec le célèbre firmware SimonK avant de les souder aux moteurs (cependant la procédure s'annonce délicate donc incertaine). Toute cette phase de montage qui est commune à tous les quadcopters et déjà amplement documentée, je ne la détaillerai donc pas sur ce blog.
 
-However, my programming work and documentation will cover the design of the flight control system integrated on the Raspberry Pi. I will start with the measure of the "attitude" (rotation in space) of the quadcopter in filtered Euler angles, then we will study the PID controller and speed regulation via the Pololu Maestro.
+En revanche, mon travail de programmation et de documentation concernera la conception du système de contrôle de vol intégré au Raspberry Pi. À commencer par la réception de "l'attitude" (la rotation dans l'espcace) du quadcopter en angles d'euler filtrés puis le contrôleur PID et la régulation des vitesses via le Pololu Maestro.
 
-Meanwhile, here is the first photo of the installation. The plastic plate will be directly attached to the X525 and will be used to support the Raspberry Pi, the MPU6050 (the accelerometer) and the Pololu Maestro (interface with ESCs).
+En attendant, voici la première photo du montage. La plaque de plastique à droite sera directement fixée au X525 et servira de support au Raspberry Pi, au MPU6050 (l'acceleromètre) et au Pololu Maestro (interface avec les ESCs).
 
-For any futher information, do not hesitate to contact me or comment.
+Pour toutes informations supplémentaires n'hésitez pas à me contacter ou à commenter.
 
-P.S: The full list of the equipment is maintained along the code on github: <a href="https://github.com/FlorentRevest/Raspcopter">https://github.com/FlorentRevest/Raspcopter</a>
+P.S: La liste complète du matériel est entretenue au côté du code sur github: <a href="https://github.com/FlorentRevest/Raspcopter">https://github.com/FlorentRevest/Raspcopter</a>

@@ -4,11 +4,11 @@
 	
 	<div id="header">
 		<div id="title">
-			<a href="/blog.html">blog</a>
+			<a href="{{ site.baseurl }}/blog.html">blog</a>
 		</div>
 		<div id="navigation">
-			<a href="/">About me</a>
-			<a href="/blog.html" class="selected">Blog</a>
+			<a href="{{ site.baseurl }}/">Moi</a>
+			<a href="{{ site.baseurl }}/blog.html" class="selected">Blog</a>
 		</div>
 		<div class="clear"></div>
 	</div>
@@ -22,7 +22,7 @@
 			<h1 class="post-title">
 				{{ page.title }}
 				<div class="post-title-sub">
-                    written by Florent Revest in {{ page.date | date: "%Y" }}
+	                écrit par Florent Revest en {{ page.date | date: "%Y" }}
 				</div>
 			</h1>
 
@@ -31,7 +31,7 @@
 			</div>
 			
 			<div class="post-comments">
-                <div id="disqus_thread"></div><script type="text/javascript" src="http://florentrevest.disqus.com/embed.js"></script><noscript><a href="http://florentrevest.disqus.com/?url=ref">See comments.</a></noscript>
+				<div id="disqus_thread"></div><script type="text/javascript" src="http://florentrevest.disqus.com/embed.js"></script><noscript><a href="http://florentrevest.disqus.com/?url=ref">Voir les commentaires.</a></noscript>
 			</div>
 		</div>
 	</div>

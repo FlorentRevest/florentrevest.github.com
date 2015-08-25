@@ -1,84 +1,84 @@
 ---
 layout: post
-title: Raspcopter - Attitude measurement
+title: Raspcopter - Réception de l'attitude
 ---
 
 <img src="http://pix.toile-libre.org/upload/original/1380988375.jpg" style="width: 100%; height: auto;"></img>
 
-I inaugurate today the suite of technical articles about my Raspcopter project by starting as promised with the attitude.
+J'inaugure aujourd'hui la lignée d'articles techniques sur mon projet de Raspcopter en commençant comme promis par : l'attitude.
 
-What we want
-============
+Ce que l'on veut
+================
 
-While this may seem naive it's true: the first mission of a quadcopter is not to fall... Even when all four engines run at equal and constant speed, the drone ends up twisting and falls alone. This natural rotation is caused by the imperfection of the drone (center of gravity moved, for example) but also and especially by the various physical constraints applied by the environment (typically: the  wind).
+Si cela peut sembler naïf c'est pourtant vrai: la première mission d'un quadcopter est de ne pas tomber... Même lorsque les quatre moteurs tournent à vitesse égale et constante, le drone fini par vriller et tomber seul. Cette rotation naturelle est causée par l'imperfection du drone (centre de gravité déplacé par exemple) mais aussi et surtout par les diverses contraintes physiques du milieu (typiquement : le vent).
 
-It is therefore essential to create a flight system dependent on the attitude of the quadcopter, that is to say, its angular position in space. A quote from Wikipedia is better than a long speech: the attitude is "the orientation of an object with respect to an inertial frame of reference or another entity (the celestial sphere, certain fields, nearby objects, etc.)."
+Il est donc indispensable de créer un système de vol dépendant de l'attitude du quadcopter, c'est-à-dire de sa position angulaire dans l'espace. Une citation Wikipedia vaut mieux qu'un long discours "L'attitude ou l'orientation, dans le domaine de l'astronautique, est la direction des axes d'un engin spatial par rapport à un trièdre de référence. Pendant le déplacement du véhicule spatial, il s'agit de contrôler les mouvements d'avant en arrière (tangage), de gauche à droite (roulis) et autour d'un axe vertical (lacet)."
 
-So we need three Euler angles which are named: yaw, pitch and roll.
+On a donc besoin de trois angles d'Euler que l'on nomme en anglais : yaw, pitch et roll.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1380985932.jpg"></img></center>
 
-What we have
-============
+Ce que l'on a
+=============
 
-Many sensors allow to obtain the attitude of the system :
+De nombreux capteurs permettent d'obtenir l'attitude du système :
 
-- The accelerometers measure linear acceleration on three axes.
-- The gyroscopes, providing a relative angular position on those same axes.
-- The magnetometers measuring the magnetic field in order to deduce the position of the north in the manner of a compass.
-- GPS receivers, the satellites provide absolute coordinates in latitude and longitude and they also give the rotation.
+- Les accéléromètres, mesurant l'accélération linéaire sur trois axes.
+- Les gyroscopes, fournissant une position angulaire relative sur les mêmes axes.
+- Les magnétomètres, mesurant le champ magnétique et permettant de déduire la position du nord à la manière d'une boussole.
+- Les récepteurs GPS, dont les satellites fournissent des coordonnées absolues en latitude et longitude et permettent d'obtenir une rotation.
 
-They all have their advantages and disadvantages. They are never used alone, always combined. By constraints of money and time, my project will only use the first two sensors. The MPU6050 of Invensense brings them together in a single chip, this is called an IMU (Inertial Measurement Unit) with six degrees of freedom. The MPU6050 is also inexpensive and often used by quadcopter projects.
+Tous ont leurs avantages et inconvénients. Ils ne sont donc jamais utilisés seuls, toujours combinés. De par des contraintes d'argent et de temps, mon projet de Raspcopter ne fera usage dans un premier temps que des deux premiers capteurs. Le MPU6050 de Invensense les réunit en une seule puce, on parle alors d'IMU (Unité de mesure inertielle) à six degrés de liberté. Le MPU6050 est par ailleurs très peu cher et souvent utilisé par des quadcopters.
 
 <center><img src="http://pix.toile-libre.org/upload/original/1380986384.jpg" style="width: 100px; height: auto;"></img></center>
 
-This chip is connected to the Raspberry Pi's GPIO via the i2c standard with four wires (SDA, SCL, Ground and 3.3V). So it is first necessary to remove the i2c driver from the Raspbian's modprobe's blacklist.
+Cette puce se connecte via la norme i2c par quatre fils (SDA, SCL, Masse et 3.3v) aux pins GPIOs dédiés du Raspberry Pi. Il est donc premièrement nécessaire de lever les drivers i2c de la blacklist Raspbian de modprobe.
 
-The use of this sensor is relatively well documented and made easy by the work of Jeff Rowberg on I2CDevLib. So it is easy to retrieve acceleration and rotation values.
+L'utilisation de ce capteur est relativement bien documentée et rendue aisée par le travail de Jeff Rowberg sur I2CDevLib. Il est donc facile de récupérer des valeurs d'accélération et de rotation.
 
-How can we get from what we have to what we want ?
-==================================================
+Comment passer de l'un à l'autre ?
+==================================
 
-The heart of the problem lies in the passage of the raw values of the MPU6050 to usual angles. Indeed raw values have three problems :
+Le coeur du problème se trouve dans le passage des valeurs brutes du MPU6050 à des angles habituels. En effet les valeurs brutes ont trois problèmes :
 
-- Firstly, they contain noise that is to say that the signal is not stable.
-- Secondly, they do not have any unit, these value do not match anything tangible.
-- Finally, those acceleration and rotation data are not combined into three angles as we wish.
+- premièrement, elles comportent du bruit c'est-à-dire que le signal n'est pas stable
+- deuxièmement, elles n'ont pas d'unité, ce sont des valeurs qui ne correspondent à rien de concret
+- pour finir, ces données d'accélération et de rotation ne sont pas combinées en trois angles comme nous le souhaitons.
 
 <img src="http://pix.toile-libre.org/upload/original/1380986108.png" style="width: 100%; height: auto;"></img>
 
-A Kalman filter is often used to stabilize values, but its implementation is pretty complex and costs some CPU time.
+Un filtre de Kalman est souvent utilisé pour stabiliser les valeurs, mais son implémentation est extrêmement complexe et couteuse en temps processeur.
 
-A much lighter and easy solution would be to create a complementary filter, using the formula :
+Une solution bien plus légère et rapide serait de créer un filtre complémentaire, selon la formule:
 
 <center><img src="http://pix.toile-libre.org/upload/original/1380986043.gif"></img></center>
 
-Applied to the roll angles (phi) and pitch (rho) calculated by
+Appliqué sur des angles roll (phi) et pitch (rhô) calculés par 
 
 <center><img src="http://pix.toile-libre.org/upload/original/1380985903.png"></img></center>
 <center><img src="http://pix.toile-libre.org/upload/original/1380985892.png"></img></center>
 
-This formula gives much more weight to the gyro's values as it takes into account the fact that the gyro measurements are stable in the short term but have a "drift" (a shift that occurs with time) over the long term (ie. returning twice in a row a gyroscope wouldn't return the same value). The accelerometer's value measures plenty of forces other than gravity so they have a lot of noise but are much more stable over the long term. This formula isn't totally efficient either.
+Cette formule accorde beaucoup plus de poids aux valeurs du gyroscope qu'à celles de l'accéléromètre car elle tiend en compte le fait que les mesures du gyroscope sont stables sur le court terme mais ont un "drift" (un décalage qui se produit avec le temps) sur le long terme (c'est-à-dire qu'en retournant deux fois d'affilé un gyroscope il ne reviendra pas à la même valeur) et que les valeurs de l'accéléromètre qui mesurent énormément de forces en plus de la gravité ont beaucoup de bruit mais sont bien plus stables sur le long terme. Cette formule n'est pas totalement efficace non plus.
 
-The choice of a an IMU filter must often be made between those two techniques. But the good news is that the MPU6050 has a "DMP" (Digital Motion Processing) chip which filters those values out of the Raspberry Pi, in real time and more effectively than a home-made algorithm. The bad news is that Invensens jealously protects the functionning of the chip and refuses to document its operation.
+Le choix d'un filtre IMU de quadcopter doit souvent se faire entre ces deux dernières techniques. Mais la bonne nouvelle c'est que le MPU6050 possède une puce "DMP" (Digital Motion Processing) qui permet de filtrer ces valeurs hors du Raspberry Pi, donc en temps réel et de manière bien plus efficace que par un algorithme implémenté à la main. La mauvaise nouvelle c'est qu'Invensense protège jalousement le fonctionnement de cette puce au nom du secret industriel et refuse de documenter son fonctionnement.
 
-This is where Noah Zerkin, an augmented reality entrepreneur who got memory dumps by reverse engineering the chip in DMP mode from the manufacturer demos helps us. I based my code on the excellent work he integrated to I2CDevLib.
+C'est ici qu'intervient Noah Zerkin, un entrepreneur en réalité augmenté qui a obtenu des dumps mémoires par retroingénierie de la puce en fonctionnement DMP à partir de démos du constructeur. C'est sur son excellent travail, intégré à I2CDevLib que se base mon code.
 
-My implementation is located in the Accelerometer class of [the server's code](https://github.com/FlorentRevest/Raspcopter/tree/master/raspberry-server). The MPU6050 initialization is done in the constructor and the Euler angles are obtained by the getYawPitchRoll() method.
+Mon implémentation est située dans la classe Accelerometer du [code du serveur](https://github.com/FlorentRevest/Raspcopter/tree/master/raspberry-server) L'initialisation du MPU6050 se fait dans le constructeur et les angles d'Euler s'obtiennent par la méthode getYawPitchRoll().
 
-The Problem with Euler angles
-=============================
+Problème des angles d'Euler
+===========================
 
-A final problem is remaining : if the Euler angles describe all the possibilites of angular positions, they are not immune to a "gimbal lock". This problem happens when two gyro axes point in the same direction, the system loses a degree of freedom and pursues an unpredictable movement. This problem seems trivial but it could have stopped the Apollo 11 mission, we will only retain a quote from Michael Collins "How about sending me a fourth gimbal for Christmas ?"
+Un dernier problème reste présent : si les angles d'Euler décrivent toutes les possibilités de positions angulaires, ils ne sont pas à l'abri pour autant d'un "blocage de cardan" ou Gimbal Lock. Ce problème arrive lorsque deux axes du gyroscope pointent dans la même direction, le système perd alors un degré de liberté et poursuit un mouvement imprédictible. Ce problème qui semble anodin aurait pu faire tourner court la mission Apollo 11, mais on n'en retiendra qu'une citation de Michael Collins "Que diriez-vous de m'envoyer un quatrième cardan pour Noël ?"
 
 <center><img src="http://pix.toile-libre.org/upload/original/1380985991.gif"></img></center>
 
-The solution, when one does not believe in Santa Claus, would be to use Quaternions, hypercomplex numbers made of a linear combination of four parameters, three of which define an axis and the last sets a rotation around this axis. The handling of this set seems too complex for a 16 year old boy, so I will stick to Euler Angles.
+La solution, lorsque l'on ne croit pas au père Noël, serait d'utiliser des Quaternions, des nombres hypercomplexes fait d'une combinaison linéaire de quatre paramètres, dont trois définissent un axe et le dernier définit une rotation autour de cet axe. La manipulation de cet ensemble dépassant mes compétences de terminal S je me contenterai de les convertir en angles d'Euler.
 
-And then ?
+Et après ?
 ==========
 
-The first phase of the control system, data acquisition, is successfully completed. Euler angles: yaw, pitch and roll must now go through a PID controller to return the engines speed. This will be discussed in the next article.
+La première phase du système de contrôle, l'acquisition de données, est donc achevée avec succès. Les angles d'Euler : yaw pitch et roll doivent maintenant passer par un contrôleur PID afin de sortir des vitesses de moteurs. Ce sera l'objet du prochain article.
 
 Sources
 =======
