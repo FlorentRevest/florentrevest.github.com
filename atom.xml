@@ -1,28 +1,478 @@
----
-layout: nil
-title : Atom Feed
----
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>{{ site.title }}</title>
- <link href="{{ site.production_url }}/atom.xml" rel="self"/>
- <link href="{{ site.production_url }}"/>
- <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>{{ site.production_url }}</id>
+ <title></title>
+ <link href="/atom.xml" rel="self"/>
+ <link href=""/>
+ <updated>2015-08-26T00:25:10+02:00</updated>
+ <id></id>
  <author>
-   <name>{{ site.author.name }}</name>
-   <email>{{ site.author.email }}</email>
+   <name></name>
+   <email></email>
  </author>
 
- {% for post in site.posts %}
+ 
  <entry>
-   <title>{{ post.title }}</title>
-   <link href="{{ site.production_url }}{{ post.url }}"/>
-   <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>{{ site.production_url }}{{ post.id }}</id>
-   <content type="html">{{ post.content | xml_escape }}</content>
+   <title>Raspcopter - New test rig for the PID tuning</title>
+   <link href="/2014/07/02/raspcopter-new-pid-test-rig"/>
+   <updated>2014-07-02T00:00:00+02:00</updated>
+   <id>/2014/07/02/raspcopter-new-pid-test-rig</id>
+   <content type="html">&lt;iframe src=&quot;//player.vimeo.com/video/99760271?color=ffffff&quot; width=&quot;100%&quot; height=&quot;360&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+
+
+
+
+&lt;center&gt;&lt;a href=&quot;http://vimeo.com/99760271&quot;&gt;Raspcopter - New PID Test Rig&lt;/a&gt;&lt;/center&gt;
+
+
+&lt;p&gt;After the lessons of the last article, the Raspcopter now has a brand new test rig. This time, the rotation is really blocked on an angle and the quadcopter can not lift anymore. It now becomes much easier than before to adjust the variables of the PID.&lt;/p&gt;
+
+&lt;p&gt;This new test rig consists of two trestles supporting a solid metal axis around which the drone is hooked and can rotate.&lt;/p&gt;
+
+&lt;p&gt;We can already observe much more satisfactory results while the PID gains in this video were selected coarsely.&lt;/p&gt;
+</content>
  </entry>
- {% endfor %}
+ 
+ <entry>
+   <title>Raspcopter - Video of the first PID tuning tests</title>
+   <link href="/2014/06/25/raspcopter-first-fly-video"/>
+   <updated>2014-06-25T00:00:00+02:00</updated>
+   <id>/2014/06/25/raspcopter-first-fly-video</id>
+   <content type="html">&lt;iframe src=&quot;//player.vimeo.com/video/99163238?color=ffffff&quot; width=&quot;100%&quot; height=&quot;360&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+
+
+
+
+&lt;center&gt;&lt;a href=&quot;http://vimeo.com/99163238&quot;&gt;Raspcopter - First series of test-flights&lt;/a&gt;&lt;/center&gt;
+
+
+&lt;p&gt;As we have seen, the UAV flight system is based on three separated PID controllers, one for each angle. However theses regulators must be tuned one after the other independently and safely before we can hope to achieve a flight to the open air. To set these values, it is convenient to block possible rotations to only one angle. This is accomplished by holding the UAV by a bar parallel to an axis of rotation.&lt;/p&gt;
+
+&lt;p&gt;The first idea was tested using two ropes tied to fences. If this idea has mainly led to failures, we can still note some interesting aspects and also learn from them. The video above shows a handful of tests.&lt;/p&gt;
+
+&lt;p&gt;Let&#39;s start with the positive: we can rejoice because the quadcopter lifts off at 40% of engines power. This suggets that the power is sufficient and that we can add additional weight. These tests have also allowed me to test the drone and the control station in duration. A tab in the ground control station specially dedicated to remotely changing PID values proved to be partiularly useful.&lt;/p&gt;
+
+&lt;p&gt;But there are also some negative points in this video. First, the range of motion left to the quadcopter does not actually blocks it on an angle so when working on the roll, we get fluctuations on the pitch and yaw axis which make working with the PID difficult or impossible. Furthermore, the height amplitude left by the strings allows the quadcopter to rise at high speed before a shock occurs when the strings are stretched violently. The drone is then turned down to the bottom which is bad for testing. (we can see this effect at 0:55)&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - First crash</title>
+   <link href="/2014/05/20/raspcopter-pid-crash"/>
+   <updated>2014-05-20T00:00:00+02:00</updated>
+   <id>/2014/05/20/raspcopter-pid-crash</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1404331500.png&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;The project progresses! Indeed, the code base is almost finished, logging functions are expected to come later but this is not a priority for now. This means that the rather technical articles that I have written so far should now let room for a serie of more practical, visual and general-public-oriented articles. But as we can suspect, the transition from theory to practice is always accompanied by small unexpected effects.&lt;/p&gt;
+
+&lt;p&gt;First test means invariably first crash. And that&#39;s exactly what happened recently, when I added a non-null integral gain to the PID parameters of the quadcopter.&lt;/p&gt;
+
+&lt;p&gt;The UAV was in operation for more than an hour and half, the integral variables that contain the sum of the angles errors thus contained gigantic values. They suddenly found themselves multiplied by a gain. This produces a maximum engine speed and the drone overturned immediately before breaking propellers. Further investigations on the behavior of the integral gain will therefor be needed.&lt;/p&gt;
+
+&lt;p&gt;Fortunately, only the propeller were damaged, but the new parts order will delay the project. This time I took care of ordering 20 propellers ahead of the inevitable next crashes !&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - Network communication</title>
+   <link href="/2014/04/30/raspcopter-network"/>
+   <updated>2014-04-30T00:00:00+02:00</updated>
+   <id>/2014/04/30/raspcopter-network</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1399577725.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;So far, the problems encountered during the development of the Raspcopter concerned only the embedded flight system on the Raspberry Pi. Then, more recently we have seen the ground control station. Those two projects are already equipped with several control functions, but without any interactive way to communicate between each other. The aim of this article is to explain the choices made about the ground &lt;-&gt; quadcopter communication and their implementation.&lt;/p&gt;
+
+&lt;h1&gt;What we want&lt;/h1&gt;
+
+&lt;p&gt;Firstly, it is important to remind the main objective of the project: to understand the inner working of a quadcopter flight system. Therefore, network-related issues are not the priority and ease of development and deployment is sought in priority. Yet, no concessions can be made :&lt;/p&gt;
+
+&lt;p&gt;The flight controls remain critical data that must necessarily be carried safely and quickly. When flying, packet loss or excessive latency do not forgive.&lt;/p&gt;
+
+&lt;p&gt;We also seek some modularity in order to get access to more things than simple flight controls.&lt;/p&gt;
+
+&lt;p&gt;Finally, the quadcopter is probably going to fly far from the ground control station, so it is necessary to use a long-range communication.&lt;/p&gt;
+
+&lt;h1&gt;What we have&lt;/h1&gt;
+
+&lt;p&gt;At this point, the Raspberry Pi has almost all GPIOs (except i2c) and one USB port free (since the second is occupied by the Pololu Maestro). We must find a means of communication exploiting those ports.&lt;/p&gt;
+
+&lt;p&gt;The Raspberry Pi works under Raspbian (or at least &lt;a href=&quot;https://www.linuxsystems.it/raspbian-wheezy-armhf-raspberry-pi-minimal-image/&quot;&gt;a very lightweight hardfloat version&lt;/a&gt;) therefore under a full Linux operating system. Our quadcopter thus enjoys all the benefits of this kernel, especially in terms of device drivers. The choice of communication methods is significantly expanded compared to other operating systems like ChibiOS RT, FreeRTOS or RTEMS.&lt;/p&gt;
+
+&lt;p&gt;At the other end of the communication, the quadcopter should talk with a laptop also running a standard Linux distribution and/or an Android smartphone.&lt;/p&gt;
+
+&lt;h1&gt;How can we get from what we have to what we want ?&lt;/h1&gt;
+
+&lt;p&gt;Several choices are presented to us, here are the main ones:&lt;/p&gt;
+
+&lt;p&gt;The first, most obvious, as used by most &quot;normal&quot; quadcopters is an analog communication from a standard quadcopter remote control. This choice is interesting in that it uses the usual material for a quadcopter and that the scope is excellent, but it offers no modularity since it generally has one channel by rotation angle and no way to pass other data in the opposite direction... Moreover, the processing of the analog signal on the Raspberry Pi is a huge task and does not seem easily feasible.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1399562740.jpg&quot; style=&quot;width: 200px; height: auto;&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;A slightly high level solution would be to use a wireless communication module such as the XBee, these small chips become fairly standard and are already much more modular and easy to implement. They also offer sufficient scope for a drone project. This solution therefore seems quite optimal, however it requires the purchase of expensive components on the RPi and on the Laptop, not to mention the Android smartphone...&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1399562728.jpg&quot; style=&quot;width: 200px; height: auto;&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;Finally, the solution is probably already all around you... it&#39;s WiFi. The benefits are numerous. First, and this is not negligible: the cost. But also the ease of development and deployment. There is also the modularity of the wireless communication, for exemple we can keep an SSH connection if something goes wrong, we could also possibly stream a webcam easily, which is quite attractive. But questions still remain unanswered: what about the scope of the WiFi, the presence of a router and the speed and security of data ?&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1399562752.png&quot; style=&quot;width: 200px; height: auto;&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;h1&gt;The network physical deployment&lt;/h1&gt;
+
+&lt;p&gt;WiFi allows us to avoid any changes on the laptop and smartphone, however the choice of the key on the Raspberry Pi is important. Luckily, an old mediacenter was waiting under the dust of my closet for someone to pull its long range wifi USB key. An antenna is present on the quadcopter to receive a communication over long distances. A range test gave decent results. Ideally the key should generate a wifi hotspot on the quadcopter itself, but unfortunately this feature is not supported by the chipset&#39;s Linux driver.&lt;/p&gt;
+
+&lt;p&gt;The flight system will have to connect itself to a ground based WiFi transmitter. Two possibilities are present: either the phone will emit a tethering network on which the quadcopter and laptop connect, or it will be the laptop that will emit the wifi.&lt;/p&gt;
+
+&lt;p&gt;On ground based devices, a client software will be responsible for maintaining communication with the quadcopter&#39;s server.&lt;/p&gt;
+
+&lt;h1&gt;The details of the communication&lt;/h1&gt;
+
+&lt;p&gt;According to the OSI model, the network&#39;s lower layers are already insured. But with regard to the protocol, choices are still to be done :&lt;/p&gt;
+
+&lt;p&gt;Starting with deciding between a TCP or UDP basis. TCP communications have the advantage of being very safe (all the packets arrive in sequence) but heavier and slower than UDP, which does not offer such safety, but is much faster. Finally the best of both worlds was found in a network library named ENet. Firstly designed for video games development, this library implements a UDP protocol but keeps major features of TCP. The result in an excellent compromise between the two.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1399563468.jpg&quot; style=&quot;width: 600px; height: auto;&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;The libenet is used on the quadcopter&#39;s server and clients in order to support a specific protocol. Each packet of this protocol is composed by a header opcode byte which defines the operation to be performes followed by a variable length containing the data to be transferred. The list of opcodes is in the header of the Network class, available on GitHub.&lt;/p&gt;
+
+&lt;p&gt;For example the command to change the value of the PID controller from the ground is named SET_PID_VALUES and corresponds to the hexadecimal opcode 0x04. The associated packet starts with a byte (char) equal to 4 and 9 floats containing the three values of the three PIDs.&lt;/p&gt;
+
+&lt;h1&gt;Sources&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.evola.fr/raspberry-shield-connexion-xbee-arduino-p-391.html&quot;&gt;Shield de Connexion Xbee et Arduino&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://rsppi.blogspot.fr/2013/04/configurando-el-mando-distancia-del.html&quot;&gt;RSPPI - RaSPberry PI: Configurando el mando a distancia del Quad-Raspi-copter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://enet.bespin.org/&quot;&gt;Enet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.commentcamarche.net/faq/7294-tcp-udp-quelles-differences&quot;&gt;TCP / UDP : Quelle différences ?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/FlorentRevest/Raspcopter/blob/master/raspberry-server/Network.cpp&quot;&gt;Network.cpp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - Ground Control Station</title>
+   <link href="/2014/02/20/raspcopter-ground-control-station"/>
+   <updated>2014-02-20T00:00:00+01:00</updated>
+   <id>/2014/02/20/raspcopter-ground-control-station</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1399577554.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;The network is a very big piece that delays the project quite a lot without necessarily visible results, so today we will talk briefly about the Ground Control Station PC software. This article is not intended to be as technical as the previous, but only informative.&lt;/p&gt;
+
+&lt;h1&gt;A convenient tool&lt;/h1&gt;
+
+&lt;p&gt;There are already countless complete ground control station softwares, like the Ardupilot&#39;s one for example. Forking one of these projects was possible but ultimately the Raspcopter got its own flight client software.&lt;/p&gt;
+
+&lt;p&gt;It is developed in C++ using the Qt framework, so it is portable and easy to maintain or expand.&lt;/p&gt;
+
+&lt;h4&gt;A controller&lt;/h4&gt;
+
+&lt;p&gt;First, the task of this station is to act as a controller, ie to collect data from a joystick. The latter is a standard video games joystick bought for ten euros in a store. Reading its data is done by ioctl via the &lt;a href=&quot;https://www.kernel.org/doc/Documentation/input/joystick-api.txt&quot;&gt;generic joystick control kernel API&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4&gt;A network client&lt;/h4&gt;
+
+&lt;p&gt;Those joystick data are then transferred to the drone by the network which will be explained in the following article. But the control station is also capable of receiving data of the quadcopter by the same means.&lt;/p&gt;
+
+&lt;h4&gt;Telemetry datas&lt;/h4&gt;
+
+&lt;p&gt;The data collected from the quadcopter mainly concern the history of angular positions of the drone but it is expected in the future that we may also be able to keep an eye on the percentage of use of processor and memory of the Raspberry Pi.&lt;/p&gt;
+
+&lt;p&gt;Two 3rd party graphics libraries were used for the pleasant display of telemetry data: &lt;a href=&quot;http://qt-apps.org/content/show.php/AnalogWidgets?content=87780&quot;&gt;AnalogWidgets&lt;/a&gt; and &lt;a href=&quot;http://www.qcustomplot.com/&quot;&gt;QCustomPlot&lt;/a&gt;. Thanks to those libraries, we can keep an eye on dials and graphs of measured data, in real-time directly from the ground. The control station also implements a function to export the data in .csv format that can be opened by LibreOffice Calc for further diagnostics in case of problems. And problems should happen quite often!&lt;/p&gt;
+
+&lt;h1&gt;The source code&lt;/h1&gt;
+
+&lt;p&gt;Like the rest of the project, the ground control station is open-source and fully &lt;a href=&quot;https://github.com/FlorentRevest/Raspcopter&quot;&gt;retrievable on GitHub&lt;/a&gt; in the laptop-client folder. Do not  hesitate to star the project if you find it useful. And if you have questions, do not forget that you can contact me.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - First Video</title>
+   <link href="/2013/12/15/raspcopter-first-video"/>
+   <updated>2013-12-15T00:00:00+01:00</updated>
+   <id>/2013/12/15/raspcopter-first-video</id>
+   <content type="html">&lt;iframe src=&quot;//player.vimeo.com/video/81924444?color=ffffff&quot; width=&quot;100%&quot; height=&quot;360&quot; frameborder=&quot;0&quot; webkitallowfullscreen mozallowfullscreen allowfullscreen&gt;&lt;/iframe&gt;
+
+
+
+
+&lt;center&gt;&lt;a href=&quot;http://vimeo.com/81924444&quot;&gt;Raspcopter - Motors control&lt;/a&gt;&lt;/center&gt;
+
+
+&lt;p&gt;Now that the Raspcopter controls its engines, knows its angular position and can connect the two, there is finally enough to shoot something interesting !&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - Engines control</title>
+   <link href="/2013/11/16/raspcopter-motors"/>
+   <updated>2013-11-16T00:00:00+01:00</updated>
+   <id>/2013/11/16/raspcopter-motors</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386413694.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;The latest article gave the Raspcopter a powerful angular self-regulation algorithm. Yet, one detail was ignored and not the least, the &quot;Feedback&quot; shown at the bottom of the PID controller scheme ensuring the closed loop function. This feedback is of course the engines speed management, the subject of today&#39;s article.&lt;/p&gt;
+
+&lt;h1&gt;What we want&lt;/h1&gt;
+
+&lt;p&gt;Like any flying machine, our little drone must have a sufficiently large vertical thrust force in order to release it of gravity. This strength is given by our old friend Newton in his third law of reciprocal actions. The propellers of the quadcopter push air downwards and by reaction, the drone is pushed up, it&#39;s as simple as that.&lt;/p&gt;
+
+&lt;p&gt;But the drone introduced a constraint: the propeller must be driven at a fairly substantial rate and by rather light engines. A type of motors solves this problem, the &quot;brushless&quot; motors.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386704254.jpg&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;Their operating principle is quite simple, above you can see thre coils electricaly powered one after the other to create a magnetic field that will move the magnet at the center, carrying the propeller&#39;s axis. The Raspcopter engines use 12 coils but the principle is still based on the alternation of three of them, it is also for this reason that it is sufficient to reverse two wires randomly in order to change the direction of rotation.&lt;/p&gt;
+
+&lt;h1&gt;What we have&lt;/h1&gt;
+
+&lt;p&gt;We want to controle these motors from the Raspberry Pi with the minimum latency. The Raspberry Pi has several interfaces, mainly GPIOs and USB. The first idea seemingly most natural would be to directly control the motors from the GPIOs pine but it is in fact impossible because the bobbin exchange rate would never be sufficient and the energy delivered would also be far too low.&lt;/p&gt;
+
+&lt;h1&gt;How can we get from what we have to what we want ?&lt;/h1&gt;
+
+&lt;p&gt;For this reason, we have to use &quot;ESCs&quot; (Electronic Speed Controllers) placed before each motor, these electronic circuits are fed by two cables from the Lipo battery and receive a PWM (Pulse Width Modulation) signal from three wires in exactly the same maneer as Servomotors. The output of these controllers is made of three wires welded to the brushless motor and alternating the coils power supply as seen previously. The chosen ESC is the 20A UBEC model of HobbyKing.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1387029010.jpg&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;We already simplified the problem because sending a PWM signal from the Raspberry Pi&#39;s GPIOs is no longer impossible. However, generating four PWM is a harder thing. Some projects still use the GPIOs directly however I don&#39;t have full confidence in it so I preferred to buy an external servo circuit management: the Pololu Micro Maestro which unloads the Raspberry from this heavy task. I chose the Maestro because of its USB connection, however Adafruit also offers excellent i2c circuits doing the same thing.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1387030267.jpg&quot; style=&quot;width: 150px; height: auto;&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;The code managing the Pololu Maestro is in the &quot;Motor&quot; class of the flight system code hosted on GitHub, it uses libusb to manage the speed of each motor as required by the specifications of Pololu.&lt;/p&gt;
+
+&lt;h1&gt;Sources&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.khanacademy.org/partner-content/mit-k12/mit-k12-physics/v/indoor-flying-robots&quot;&gt;A Crash Course on Indoor Flying Robots&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.howstuffworks.com/brushless-motor.htm&quot;&gt;HowStuffWorks &quot;How does a brushless electric motor work?&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.hobbyking.com/hobbyking/store/__15202__hobby_king_20a_esc_3a_ubec.html&quot;&gt;Hobbyking 20A ESC 3A UBEC&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.adafruit.com/products/815&quot;&gt;Adafruit 16 Channels controller&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.pololu.com/docs/0J40&quot;&gt;Pololu Maestro Servo Controller&#39;s User Guide&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://sites.google.com/site/semilleroadt/raspberry-pi-tutorials/gpio&quot;&gt;How to use GPIO on Raspberry Pi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/FlorentRevest/Raspcopter/blob/master/raspberry-server/Motors.cpp&quot;&gt;Motors.cpp&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - PID (Proportional Integral Derivative) controller</title>
+   <link href="/2013/10/30/raspcopter-pid"/>
+   <updated>2013-10-30T00:00:00+01:00</updated>
+   <id>/2013/10/30/raspcopter-pid</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386360951.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;In the previous article, we started studying a quadcopter flight system. The first step was to recover the attitude, that is to say the angular position of the drone in the air. Today we want to exploit these angle measurements in order to stabilize the quadcopter around values specified by the ground control station.&lt;/p&gt;
+
+&lt;h1&gt;What we want&lt;/h1&gt;
+
+&lt;p&gt;While it is true that the drone must be able to remain parallel to the ground when no command is received, it also must know how to rotate on its axis in order to move. These rotations are specified by the &quot;ground control station&quot;, a software running on a laptop and processing the data of a joystick. The joystick position reflects a desired angle which is the transported by WiFi and interepreted by the Raspberry Pi.&lt;/p&gt;
+
+&lt;p&gt;We would like to have a fluid flight despite the sudden changes in position of the joystick, while keeping control on the more or less aggressive engines response.&lt;/p&gt;
+
+&lt;h1&gt;What we have&lt;/h1&gt;
+
+&lt;p&gt;When the quadcopter confronts the three Euler angles measured by the accelerometer as seen in the previous article and the desired angles sent by the ground station, the difference between these two data produce a sudden &lt;em&gt;error&lt;/em&gt;. If the engine speed is changed at the same time as the occurence of the error, such as as the square wave graph below: The powerful and sudden impulse risks at best to exceed the desired angle and go back indefinitely creating instability, at worst to overthrow the quadcopter immediately. It is therefore understandable that it is necessary to have an algorithm &quot;smoothing&quot; the transitions.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1381347244.jpg&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;h1&gt;How can we get from what we have to what we want ?&lt;/h1&gt;
+
+&lt;p&gt;This problem is pervasive in engineering and requires the use of a &quot;regulator&quot;, we will discuss and use the PID controller (for Proportional, Integral, Derivative).&lt;/p&gt;
+
+&lt;p&gt;In our quadcopter project, measurements being made on three angles, it is necessary to use three different PID controllers. This algorithm takes as input the difference between the desired angle and the measured angle, for example when the ground sends nothing this error is the orientation of the UAV relative to the ground. Mathematical operations are applied to these errors and determine the speed that should be given to the four motors.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;The PID controller is an algorithm that takes an error as its input and returns a linear combination of this error with the integral of this error and the derivative of this error.&lt;/em&gt; &lt;strong&gt;That&#39;s it.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;One quickly sees the benefits of this algorithm: first it is very simple to understand and implement. But we also know that it is extremely reliable, this controller is the most used in the world and is found everywhere... even in the flush of your toilet !&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386350513.jpg&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;h1&gt;Proportional&lt;/h1&gt;
+
+&lt;p&gt;The proportional term is obtained very simply by multiplying the error by a constant named &quot;proportional gain&quot;. The greater the gain is, the greater the response speed is, but it may be unstable. The smaller the gain is, the more the response speed is &quot;soft&quot; and likely to be ineffective. It is important to find a good intermediate between these two extremes.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386351053.png&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;Here we can see that a proportional gain (Kp) that is too large results in a significant overshoot of the desired angle (the blue reference signal).&lt;/p&gt;
+
+&lt;h1&gt;Integral&lt;/h1&gt;
+
+&lt;p&gt;Unlike a simple proportional control system, the PID controller takes into account the history of angular errors. For this, the integral term is introduced, it is the sum of all the errors accumulated over time multiplied by a constant, the &quot;integral gain&quot; Ki.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386353656.png&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;The integral gain directly affects the height (and therefore the number) of the target value overshoots. Too low gain is problematic in certain situations such as when the wind is too strong. However a too high gain causes an oscilation around the desired angle.&lt;/p&gt;
+
+&lt;h1&gt;Derivative&lt;/h1&gt;
+
+&lt;p&gt;The derivative term is sometimes called &quot;accelerator&quot; since it can compress the response time. It is obtained by substracting the current and previous errors multiplied by the derivative gain. This term, however, is to be taken lightly because it is very sensitive to data noise.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1386353681.png&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;Once is not a custom, chart allows us to better understand the impact of the gain.&lt;/p&gt;
+
+&lt;h1&gt;And then ?&lt;/h1&gt;
+
+&lt;p&gt;Once the code of the PID controller implemented (the very simple PID class is available on github) it is to determine the three gains of each controller. As every quadcopter has special features, there is no universal PID constants, however the determination of these values is not random either.&lt;/p&gt;
+
+&lt;p&gt;First, it should be noted that a rapid determination method, called &quot;Ziegler and Nichols method&quot; exists and provides correct Ki and Kd from the only value of Kp. The gains can then be adjusted more precisely based on parameters seen above.&lt;/p&gt;
+
+&lt;p&gt;Moreover, a quadcopter (unlike a tricopter of Hexacopter) is almost symmetrical, so the pitch and roll PID&#39;s gains should be similar.&lt;/p&gt;
+
+&lt;p&gt;Finally, it is important to note that for security reasons the testing of these PIDs is never done in real conditions outside. By firmly hanging the quadcopter to a bar parallel to an axis of rotation, we are able to block the rotation of the other angles and work on one PID at a time.&lt;/p&gt;
+
+&lt;h1&gt;Sources&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://aeroquad.com/showwiki.php?title=A+Guide+To+Proportional+Integral+and+Derivative+PID+Control&quot;&gt;A Guide To Proportional Integral and Derivative Control (PID)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://wiki.openpilot.org/pages/viewpage.action?pageId=21857142&quot;&gt;PID régulateur ? Comment ça marche ?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/PID_controller&quot;&gt;PID controller - Wikipédia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.oscarliang.net/quadcopter-pid-explained-tuning/&quot;&gt;Quadcopter PID Explained and Tuning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.pistuffing.co.uk/?p=1314&quot;&gt;PID Tuning, how &quot;I did it my way&quot;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://aeroquad.com/showwiki.php?title=PID+Tuning&quot;&gt;PID Tuning&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://wiki.openpilot.org/display/Doc/Stabilization+Tuning++Multirotor&quot;&gt;Stabilization Tuning Multirotor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www-hadoc.lag.ensieg.inpg.fr/hadoc/ateliers/reglageEmpCorr/ReglEmpCorrAide.html&quot;&gt;AIDE: réglage empirique des correcteurs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - Attitude measurement</title>
+   <link href="/2013/10/05/raspcopter-attitude"/>
+   <updated>2013-10-05T00:00:00+02:00</updated>
+   <id>/2013/10/05/raspcopter-attitude</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380988375.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;I inaugurate today the suite of technical articles about my Raspcopter project by starting as promised with the attitude.&lt;/p&gt;
+
+&lt;h1&gt;What we want&lt;/h1&gt;
+
+&lt;p&gt;While this may seem naive it&#39;s true: the first mission of a quadcopter is not to fall... Even when all four engines run at equal and constant speed, the drone ends up twisting and falls alone. This natural rotation is caused by the imperfection of the drone (center of gravity moved, for example) but also and especially by the various physical constraints applied by the environment (typically: the  wind).&lt;/p&gt;
+
+&lt;p&gt;It is therefore essential to create a flight system dependent on the attitude of the quadcopter, that is to say, its angular position in space. A quote from Wikipedia is better than a long speech: the attitude is &quot;the orientation of an object with respect to an inertial frame of reference or another entity (the celestial sphere, certain fields, nearby objects, etc.).&quot;&lt;/p&gt;
+
+&lt;p&gt;So we need three Euler angles which are named: yaw, pitch and roll.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380985932.jpg&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;h1&gt;What we have&lt;/h1&gt;
+
+&lt;p&gt;Many sensors allow to obtain the attitude of the system :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The accelerometers measure linear acceleration on three axes.&lt;/li&gt;
+&lt;li&gt;The gyroscopes, providing a relative angular position on those same axes.&lt;/li&gt;
+&lt;li&gt;The magnetometers measuring the magnetic field in order to deduce the position of the north in the manner of a compass.&lt;/li&gt;
+&lt;li&gt;GPS receivers, the satellites provide absolute coordinates in latitude and longitude and they also give the rotation.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;They all have their advantages and disadvantages. They are never used alone, always combined. By constraints of money and time, my project will only use the first two sensors. The MPU6050 of Invensense brings them together in a single chip, this is called an IMU (Inertial Measurement Unit) with six degrees of freedom. The MPU6050 is also inexpensive and often used by quadcopter projects.&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380986384.jpg&quot; style=&quot;width: 100px; height: auto;&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;This chip is connected to the Raspberry Pi&#39;s GPIO via the i2c standard with four wires (SDA, SCL, Ground and 3.3V). So it is first necessary to remove the i2c driver from the Raspbian&#39;s modprobe&#39;s blacklist.&lt;/p&gt;
+
+&lt;p&gt;The use of this sensor is relatively well documented and made easy by the work of Jeff Rowberg on I2CDevLib. So it is easy to retrieve acceleration and rotation values.&lt;/p&gt;
+
+&lt;h1&gt;How can we get from what we have to what we want ?&lt;/h1&gt;
+
+&lt;p&gt;The heart of the problem lies in the passage of the raw values of the MPU6050 to usual angles. Indeed raw values have three problems :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Firstly, they contain noise that is to say that the signal is not stable.&lt;/li&gt;
+&lt;li&gt;Secondly, they do not have any unit, these value do not match anything tangible.&lt;/li&gt;
+&lt;li&gt;Finally, those acceleration and rotation data are not combined into three angles as we wish.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;p&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380986108.png&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/p&gt;
+
+&lt;p&gt;A Kalman filter is often used to stabilize values, but its implementation is pretty complex and costs some CPU time.&lt;/p&gt;
+
+&lt;p&gt;A much lighter and easy solution would be to create a complementary filter, using the formula :&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380986043.gif&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;Applied to the roll angles (phi) and pitch (rho) calculated by&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380985903.png&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380985892.png&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;This formula gives much more weight to the gyro&#39;s values as it takes into account the fact that the gyro measurements are stable in the short term but have a &quot;drift&quot; (a shift that occurs with time) over the long term (ie. returning twice in a row a gyroscope wouldn&#39;t return the same value). The accelerometer&#39;s value measures plenty of forces other than gravity so they have a lot of noise but are much more stable over the long term. This formula isn&#39;t totally efficient either.&lt;/p&gt;
+
+&lt;p&gt;The choice of a an IMU filter must often be made between those two techniques. But the good news is that the MPU6050 has a &quot;DMP&quot; (Digital Motion Processing) chip which filters those values out of the Raspberry Pi, in real time and more effectively than a home-made algorithm. The bad news is that Invensens jealously protects the functionning of the chip and refuses to document its operation.&lt;/p&gt;
+
+&lt;p&gt;This is where Noah Zerkin, an augmented reality entrepreneur who got memory dumps by reverse engineering the chip in DMP mode from the manufacturer demos helps us. I based my code on the excellent work he integrated to I2CDevLib.&lt;/p&gt;
+
+&lt;p&gt;My implementation is located in the Accelerometer class of &lt;a href=&quot;https://github.com/FlorentRevest/Raspcopter/tree/master/raspberry-server&quot;&gt;the server&#39;s code&lt;/a&gt;. The MPU6050 initialization is done in the constructor and the Euler angles are obtained by the getYawPitchRoll() method.&lt;/p&gt;
+
+&lt;h1&gt;The Problem with Euler angles&lt;/h1&gt;
+
+&lt;p&gt;A final problem is remaining : if the Euler angles describe all the possibilites of angular positions, they are not immune to a &quot;gimbal lock&quot;. This problem happens when two gyro axes point in the same direction, the system loses a degree of freedom and pursues an unpredictable movement. This problem seems trivial but it could have stopped the Apollo 11 mission, we will only retain a quote from Michael Collins &quot;How about sending me a fourth gimbal for Christmas ?&quot;&lt;/p&gt;
+
+&lt;center&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380985991.gif&quot;&gt;&lt;/img&gt;&lt;/center&gt;
+
+
+&lt;p&gt;The solution, when one does not believe in Santa Claus, would be to use Quaternions, hypercomplex numbers made of a linear combination of four parameters, three of which define an axis and the last sets a rotation around this axis. The handling of this set seems too complex for a 16 year old boy, so I will stick to Euler Angles.&lt;/p&gt;
+
+&lt;h1&gt;And then ?&lt;/h1&gt;
+
+&lt;p&gt;The first phase of the control system, data acquisition, is successfully completed. Euler angles: yaw, pitch and roll must now go through a PID controller to return the engines speed. This will be discussed in the next article.&lt;/p&gt;
+
+&lt;h1&gt;Sources&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Euler_angles&quot;&gt;Euler angles&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Aircraft_attitude&quot;&gt;Attitude control&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.geeetech.com/wiki/index.php/MPU-6050_Triple_Axis_Accelerometer_%26_Gyro_Breakout&quot;&gt;MPU6050 Triple Axis Accelerometer &amp;amp; Gyro Breakout&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://poivron-robotique.fr/I2C-sur-le-Raspberry-Pi.html&quot;&gt;i2c sur le Raspberry pi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Attitude_control#Relative_attitude_sensors&quot;&gt;Relative attitude sensors&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.pieter-jan.com/node/11&quot;&gt;Reading a IMU without Kalman: The Complementary Filter&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.geekmomprojects.com/mpu-6050-dmp-data-from-i2cdevlib/&quot;&gt;MPU-6050: DMP Data from i2cdevlib&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Gimbal_lock&quot;&gt;Gimbal lock&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;dans%20l&#39;espace:%20http://fr.wikipedia.org/wiki/Quaternions_et_rotation_dans_l&#39;espace&quot;&gt;Quaternions et rotation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/richardghirst/PiBits/tree/master/MPU6050-Pi-Demo&quot;&gt;PiBits, MPU6050 Pi Demo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://github.com/jrowberg/i2cdevlib/tree/master/Arduino/MPU6050&quot;&gt;i2cdevlib MPU6050: &lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Raspcopter - Frame building</title>
+   <link href="/2013/09/28/raspcopter-frame"/>
+   <updated>2013-09-28T00:00:00+02:00</updated>
+   <id>/2013/09/28/raspcopter-frame</id>
+   <content type="html">&lt;p&gt;&lt;a href=&quot;http://pix.toile-libre.org/upload/original/1380366834.jpg&quot;&gt;&lt;img src=&quot;http://pix.toile-libre.org/upload/original/1380366834.jpg&quot; style=&quot;width: 100%; height: auto;&quot;&gt;&lt;/img&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After two months of unbearable waiting, the package of the quadcopter parts ordered from HobbyKing was finally delivered. I started to build the X525 v3 frame with the Brushless motors FC 28-22 Outrunner 1200kv. I may flash the ESC 20A UBEC HobbyKing with the famous SimonK firmware before soldering the engines (however the procedure is delicate so uncertain). This whole assembly phase that is common to all quadcopters is already well documented, so I won&#39;t detail those steps on this blog.&lt;/p&gt;
+
+&lt;p&gt;However, my programming work and documentation will cover the design of the flight control system integrated on the Raspberry Pi. I will start with the measure of the &quot;attitude&quot; (rotation in space) of the quadcopter in filtered Euler angles, then we will study the PID controller and speed regulation via the Pololu Maestro.&lt;/p&gt;
+
+&lt;p&gt;Meanwhile, here is the first photo of the installation. The plastic plate will be directly attached to the X525 and will be used to support the Raspberry Pi, the MPU6050 (the accelerometer) and the Pololu Maestro (interface with ESCs).&lt;/p&gt;
+
+&lt;p&gt;For any futher information, do not hesitate to contact me or comment.&lt;/p&gt;
+
+&lt;p&gt;P.S: The full list of the equipment is maintained along the code on github: &lt;a href=&quot;https://github.com/FlorentRevest/Raspcopter&quot;&gt;https://github.com/FlorentRevest/Raspcopter&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
  
 </feed>

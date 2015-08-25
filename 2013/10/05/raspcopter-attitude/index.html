@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Raspcopter - Attitude measurement</title>
+	<meta name="author" content="Florent Revest" />
+	
+	<link rel="stylesheet" href="/stylesheet.css?20150826002510" type="text/css" media="screen" title="no title" charset="utf-8" />
+	<link rel="stylesheet" href="/resources/fancybox/fancybox.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	
+	<script src="/javascripts/main.js?20150826002510" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+   
+      _gaq.push(['_setAccount', 'UA-50526189-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <a href="/fr/2013/10/05/raspcopter-attitude"><div class="flag">Lire en français</div></a>
+
+
+
+<div id="universe">
+	
+	<div id="header">
+		<div id="title">
+			<a href="/blog.html">blog</a>
+		</div>
+		<div id="navigation">
+			<a href="/">About me</a>
+			<a href="/blog.html" class="selected">Blog</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<div class="post-world">
+		<div class="post-item">
+			<div class="post-meta">
+			    <p class="date"><i>05</i><b>Oct</b></p>
+			</div>
+
+			<h1 class="post-title">
+				Raspcopter - Attitude measurement
+				<div class="post-title-sub">
+                    written by Florent Revest in 2013
+				</div>
+			</h1>
+
+			<div class="post-content">
+				<p><img src="http://pix.toile-libre.org/upload/original/1380988375.jpg" style="width: 100%; height: auto;"></img></p>
+
+<p>I inaugurate today the suite of technical articles about my Raspcopter project by starting as promised with the attitude.</p>
+
+<h1>What we want</h1>
+
+<p>While this may seem naive it's true: the first mission of a quadcopter is not to fall... Even when all four engines run at equal and constant speed, the drone ends up twisting and falls alone. This natural rotation is caused by the imperfection of the drone (center of gravity moved, for example) but also and especially by the various physical constraints applied by the environment (typically: the  wind).</p>
+
+<p>It is therefore essential to create a flight system dependent on the attitude of the quadcopter, that is to say, its angular position in space. A quote from Wikipedia is better than a long speech: the attitude is "the orientation of an object with respect to an inertial frame of reference or another entity (the celestial sphere, certain fields, nearby objects, etc.)."</p>
+
+<p>So we need three Euler angles which are named: yaw, pitch and roll.</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1380985932.jpg"></img></center>
+
+
+<h1>What we have</h1>
+
+<p>Many sensors allow to obtain the attitude of the system :</p>
+
+<ul>
+<li>The accelerometers measure linear acceleration on three axes.</li>
+<li>The gyroscopes, providing a relative angular position on those same axes.</li>
+<li>The magnetometers measuring the magnetic field in order to deduce the position of the north in the manner of a compass.</li>
+<li>GPS receivers, the satellites provide absolute coordinates in latitude and longitude and they also give the rotation.</li>
+</ul>
+
+
+<p>They all have their advantages and disadvantages. They are never used alone, always combined. By constraints of money and time, my project will only use the first two sensors. The MPU6050 of Invensense brings them together in a single chip, this is called an IMU (Inertial Measurement Unit) with six degrees of freedom. The MPU6050 is also inexpensive and often used by quadcopter projects.</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1380986384.jpg" style="width: 100px; height: auto;"></img></center>
+
+
+<p>This chip is connected to the Raspberry Pi's GPIO via the i2c standard with four wires (SDA, SCL, Ground and 3.3V). So it is first necessary to remove the i2c driver from the Raspbian's modprobe's blacklist.</p>
+
+<p>The use of this sensor is relatively well documented and made easy by the work of Jeff Rowberg on I2CDevLib. So it is easy to retrieve acceleration and rotation values.</p>
+
+<h1>How can we get from what we have to what we want ?</h1>
+
+<p>The heart of the problem lies in the passage of the raw values of the MPU6050 to usual angles. Indeed raw values have three problems :</p>
+
+<ul>
+<li>Firstly, they contain noise that is to say that the signal is not stable.</li>
+<li>Secondly, they do not have any unit, these value do not match anything tangible.</li>
+<li>Finally, those acceleration and rotation data are not combined into three angles as we wish.</li>
+</ul>
+
+
+<p><img src="http://pix.toile-libre.org/upload/original/1380986108.png" style="width: 100%; height: auto;"></img></p>
+
+<p>A Kalman filter is often used to stabilize values, but its implementation is pretty complex and costs some CPU time.</p>
+
+<p>A much lighter and easy solution would be to create a complementary filter, using the formula :</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1380986043.gif"></img></center>
+
+
+<p>Applied to the roll angles (phi) and pitch (rho) calculated by</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1380985903.png"></img></center>
+
+
+<center><img src="http://pix.toile-libre.org/upload/original/1380985892.png"></img></center>
+
+
+<p>This formula gives much more weight to the gyro's values as it takes into account the fact that the gyro measurements are stable in the short term but have a "drift" (a shift that occurs with time) over the long term (ie. returning twice in a row a gyroscope wouldn't return the same value). The accelerometer's value measures plenty of forces other than gravity so they have a lot of noise but are much more stable over the long term. This formula isn't totally efficient either.</p>
+
+<p>The choice of a an IMU filter must often be made between those two techniques. But the good news is that the MPU6050 has a "DMP" (Digital Motion Processing) chip which filters those values out of the Raspberry Pi, in real time and more effectively than a home-made algorithm. The bad news is that Invensens jealously protects the functionning of the chip and refuses to document its operation.</p>
+
+<p>This is where Noah Zerkin, an augmented reality entrepreneur who got memory dumps by reverse engineering the chip in DMP mode from the manufacturer demos helps us. I based my code on the excellent work he integrated to I2CDevLib.</p>
+
+<p>My implementation is located in the Accelerometer class of <a href="https://github.com/FlorentRevest/Raspcopter/tree/master/raspberry-server">the server's code</a>. The MPU6050 initialization is done in the constructor and the Euler angles are obtained by the getYawPitchRoll() method.</p>
+
+<h1>The Problem with Euler angles</h1>
+
+<p>A final problem is remaining : if the Euler angles describe all the possibilites of angular positions, they are not immune to a "gimbal lock". This problem happens when two gyro axes point in the same direction, the system loses a degree of freedom and pursues an unpredictable movement. This problem seems trivial but it could have stopped the Apollo 11 mission, we will only retain a quote from Michael Collins "How about sending me a fourth gimbal for Christmas ?"</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1380985991.gif"></img></center>
+
+
+<p>The solution, when one does not believe in Santa Claus, would be to use Quaternions, hypercomplex numbers made of a linear combination of four parameters, three of which define an axis and the last sets a rotation around this axis. The handling of this set seems too complex for a 16 year old boy, so I will stick to Euler Angles.</p>
+
+<h1>And then ?</h1>
+
+<p>The first phase of the control system, data acquisition, is successfully completed. Euler angles: yaw, pitch and roll must now go through a PID controller to return the engines speed. This will be discussed in the next article.</p>
+
+<h1>Sources</h1>
+
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Euler_angles">Euler angles</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Aircraft_attitude">Attitude control</a></li>
+<li><a href="http://www.geeetech.com/wiki/index.php/MPU-6050_Triple_Axis_Accelerometer_%26_Gyro_Breakout">MPU6050 Triple Axis Accelerometer &amp; Gyro Breakout</a></li>
+<li><a href="http://poivron-robotique.fr/I2C-sur-le-Raspberry-Pi.html">i2c sur le Raspberry pi</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Attitude_control#Relative_attitude_sensors">Relative attitude sensors</a></li>
+<li><a href="http://www.pieter-jan.com/node/11">Reading a IMU without Kalman: The Complementary Filter</a></li>
+<li><a href="http://www.geekmomprojects.com/mpu-6050-dmp-data-from-i2cdevlib/">MPU-6050: DMP Data from i2cdevlib</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Gimbal_lock">Gimbal lock</a></li>
+<li><a href="dans%20l'espace:%20http://fr.wikipedia.org/wiki/Quaternions_et_rotation_dans_l'espace">Quaternions et rotation</a></li>
+<li><a href="https://github.com/richardghirst/PiBits/tree/master/MPU6050-Pi-Demo">PiBits, MPU6050 Pi Demo</a></li>
+<li><a href="https://github.com/jrowberg/i2cdevlib/tree/master/Arduino/MPU6050">i2cdevlib MPU6050: </a></li>
+</ul>
+
+
+			</div>
+			
+			<div class="post-comments">
+                <div id="disqus_thread"></div><script type="text/javascript" src="http://florentrevest.disqus.com/embed.js"></script><noscript><a href="http://florentrevest.disqus.com/?url=ref">See comments.</a></noscript>
+			</div>
+		</div>
+	</div>
+	
+	<div class="sidebar">
+	<div class="about-me">
+		<h1>&nbsp;</h1>
+		<img class="avatar" src="http://gravatar.com/avatar/bdd848257fce7eb848b301b2ee6e0f9e.jpg?s=50" alt="" />
+		<div class="description">
+			<p>
+                Computer science student at INSA Toulouse, I'm crazy about programming and free softwares.
+                <br><br>
+                <i class="fa fa-envelope-square fa-fw"></i><td><script type="text/javascript">document.write("<n uers=\"znvygb:erirfgsyb@tznvy.pbz\">erirfgsyb@tznvy.pbz</n>".replace(/[a-zA-Z]/g, function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));</script></td>
+                <i class="fa fa-github-square fa-fw"></i><a href="https://github.com/FlorentRevest">GitHub</a>
+                <i class="fa fa-linkedin-square fa-fw"></i><a href="https://fr.linkedin.com/pub/florent-revest/bb/842/653">LinkedIn</a> <br>
+                <i class="fa fa-twitter-square fa-fw"></i><a href="https://twitter.com/xenon132">Twitter</a>
+                <i class="fa fa-flickr fa-fw"></i><a href="https://www.flickr.com/photos/florent_revest/">Flickr</a>
+                <i class="fa fa-pencil-square fa-fw"></i><a href="irc://kido@irc.freenode.net">kido@irc.freeenode.net</a>
+                <br><br>
+		    </p>
+	    </div>
+	<div class="section recent-articles">
+		<h2>Recent Articles</h2>
+		<dl class="labels">
+			
+				<dt>02 Jul</dt>
+				<dd><a href="/2014/07/02/raspcopter-new-pid-test-rig" class="title">Raspcopter - New test rig for the PID tuning</a></dd>
+			
+				<dt>25 Jun</dt>
+				<dd><a href="/2014/06/25/raspcopter-first-fly-video" class="title">Raspcopter - Video of the first PID tuning tests</a></dd>
+			
+				<dt>20 May</dt>
+				<dd><a href="/2014/05/20/raspcopter-pid-crash" class="title">Raspcopter - First crash</a></dd>
+			
+				<dt>30 Apr</dt>
+				<dd><a href="/2014/04/30/raspcopter-network" class="title">Raspcopter - Network communication</a></dd>
+			
+				<dt>20 Feb</dt>
+				<dd><a href="/2014/02/20/raspcopter-ground-control-station" class="title">Raspcopter - Ground Control Station</a></dd>
+			
+				<dt>15 Dec</dt>
+				<dd><a href="/2013/12/15/raspcopter-first-video" class="title">Raspcopter - First Video</a></dd>
+			
+				<dt>16 Nov</dt>
+				<dd><a href="/2013/11/16/raspcopter-motors" class="title">Raspcopter - Engines control</a></dd>
+			
+				<dt>30 Oct</dt>
+				<dd><a href="/2013/10/30/raspcopter-pid" class="title">Raspcopter - PID (Proportional Integral Derivative) controller</a></dd>
+			
+			<dt>&nbsp;</dt>
+			<dd><a href="/archive.html">See more &rarr;</a></dd>
+		</dl>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+	
+</div>
+
+</body>
+</html>
+

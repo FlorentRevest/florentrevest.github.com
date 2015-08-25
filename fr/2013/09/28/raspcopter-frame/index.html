@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Raspcopter - Construction du cadre</title>
+	<meta name="author" content="Florent Revest" />
+	
+    <link rel="stylesheet" href="/fr/stylesheet.css?20150826002521" type="text/css" media="screen" title="no title" charset="utf-8" />
+    <link rel="stylesheet" href="/fr/resources/fancybox/fancybox.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	
+    <script src="/fr/javascripts/main.js?20150826002521" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+   
+      _gaq.push(['_setAccount', 'UA-50526189-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <script type="text/javascript">
+        var url = "/2013/09/28/raspcopter-frame";
+        url = url.replace("/fr/", "/"); 
+        document.write("<a href=\"" + url + "\"><div class=\"flag\">Read in english</div></a>");
+    </script>
+
+
+<div id="universe">
+	
+	<div id="header">
+		<div id="title">
+			<a href="/fr/blog.html">blog</a>
+		</div>
+		<div id="navigation">
+			<a href="/fr/">Moi</a>
+			<a href="/fr/blog.html" class="selected">Blog</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<div class="post-world">
+		<div class="post-item">
+			<div class="post-meta">
+			    <p class="date"><i>28</i><b>Sep</b></p>
+			</div>
+
+			<h1 class="post-title">
+				Raspcopter - Construction du cadre
+				<div class="post-title-sub">
+	                écrit par Florent Revest en 2013
+				</div>
+			</h1>
+
+			<div class="post-content">
+				<p><a href="http://pix.toile-libre.org/upload/original/1380366834.jpg"><img src="http://pix.toile-libre.org/upload/original/1380366834.jpg" style="width: 100%; height: auto;"></img></a></p>
+
+<p>Après deux mois d'attente insoutenable, le colis des pièces du quadcopter commandées chez HobbyKing a fini par être livré. J'ai commencé à monter le cadre X525 v3 avec les moteurs Brushless FC 28-22 Outrunner 1200kv. Je flasherai peut être les ESC 20A UBEC HobbyKing avec le célèbre firmware SimonK avant de les souder aux moteurs (cependant la procédure s'annonce délicate donc incertaine). Toute cette phase de montage qui est commune à tous les quadcopters et déjà amplement documentée, je ne la détaillerai donc pas sur ce blog.</p>
+
+<p>En revanche, mon travail de programmation et de documentation concernera la conception du système de contrôle de vol intégré au Raspberry Pi. À commencer par la réception de "l'attitude" (la rotation dans l'espcace) du quadcopter en angles d'euler filtrés puis le contrôleur PID et la régulation des vitesses via le Pololu Maestro.</p>
+
+<p>En attendant, voici la première photo du montage. La plaque de plastique à droite sera directement fixée au X525 et servira de support au Raspberry Pi, au MPU6050 (l'acceleromètre) et au Pololu Maestro (interface avec les ESCs).</p>
+
+<p>Pour toutes informations supplémentaires n'hésitez pas à me contacter ou à commenter.</p>
+
+<p>P.S: La liste complète du matériel est entretenue au côté du code sur github: <a href="https://github.com/FlorentRevest/Raspcopter">https://github.com/FlorentRevest/Raspcopter</a></p>
+
+			</div>
+			
+			<div class="post-comments">
+				<div id="disqus_thread"></div><script type="text/javascript" src="http://florentrevest.disqus.com/embed.js"></script><noscript><a href="http://florentrevest.disqus.com/?url=ref">Voir les commentaires.</a></noscript>
+			</div>
+		</div>
+	</div>
+	
+	<div class="sidebar">
+	<div class="about-me">
+		<h1>&nbsp;</h1>
+		<img class="avatar" src="http://gravatar.com/avatar/bdd848257fce7eb848b301b2ee6e0f9e.jpg?s=50" alt="" />
+		<div class="description">
+			<p>
+            Étudiant à l'INSA Toulouse, je suis passionné de programmation et de logiciels libres.
+            <br><br>
+                <i class="fa fa-envelope-square fa-fw"></i><td><script type="text/javascript">document.write("<n uers=\"znvygb:erirfgsyb@tznvy.pbz\">erirfgsyb@tznvy.pbz</n>".replace(/[a-zA-Z]/g, function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));</script></td>
+                <i class="fa fa-github-square fa-fw"></i><a href="https://github.com/FlorentRevest">GitHub</a>
+                <i class="fa fa-linkedin-square fa-fw"></i><a href="https://fr.linkedin.com/pub/florent-revest/bb/842/653">LinkedIn</a> <br>
+                <i class="fa fa-twitter-square fa-fw"></i><a href="https://twitter.com/xenon132">Twitter</a>
+                <i class="fa fa-flickr fa-fw"></i><a href="https://www.flickr.com/photos/florent_revest/">Flickr</a>
+                <i class="fa fa-pencil-square fa-fw"></i><a href="irc://kido@irc.freenode.net">kido@irc.freeenode.net</a>
+                <br><br>
+		    </p>
+	    </div>
+	<div class="section recent-articles">
+		<h2>Articles Récents</h2>
+		<dl class="labels">
+			
+				<dt>02 Jul</dt>
+                <dd><a href="/fr/2014/07/02/raspcopter-new-pid-test-rig" class="title">Raspcopter - Nouveau banc d'essai pour la configuration PID</a></dd>
+			
+				<dt>25 Jun</dt>
+                <dd><a href="/fr/2014/06/25/raspcopter-first-fly-video" class="title">Raspcopter - Premiers tests de la configuration PID en vidéo</a></dd>
+			
+				<dt>20 May</dt>
+                <dd><a href="/fr/2014/05/20/raspcopter-pid-crash" class="title">Raspcopter - Premier crash</a></dd>
+			
+				<dt>30 Apr</dt>
+                <dd><a href="/fr/2014/04/30/raspcopter-network" class="title">Raspcopter - Communication réseau</a></dd>
+			
+				<dt>20 Feb</dt>
+                <dd><a href="/fr/2014/02/20/raspcopter-ground-control-station" class="title">Raspcopter - Station de contrôle au sol</a></dd>
+			
+				<dt>15 Dec</dt>
+                <dd><a href="/fr/2013/12/15/raspcopter-first-video" class="title">Raspcopter - Première vidéo</a></dd>
+			
+				<dt>16 Nov</dt>
+                <dd><a href="/fr/2013/11/16/raspcopter-motors" class="title">Raspcopter - Contrôle des moteurs</a></dd>
+			
+				<dt>30 Oct</dt>
+                <dd><a href="/fr/2013/10/30/raspcopter-pid" class="title">Raspcopter - Régulateur PID (Proportionnel Intégral Dérivé)</a></dd>
+			
+			<dt>&nbsp;</dt>
+            <dd><a href="/fr/archive.html">Tout voir &rarr;</a></dd>
+		</dl>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+	
+</div>
+
+</body>
+</html>
+

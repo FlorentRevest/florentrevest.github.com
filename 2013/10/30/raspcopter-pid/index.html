@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	<title>Raspcopter - PID (Proportional Integral Derivative) controller</title>
+	<meta name="author" content="Florent Revest" />
+	
+	<link rel="stylesheet" href="/stylesheet.css?20150826002510" type="text/css" media="screen" title="no title" charset="utf-8" />
+	<link rel="stylesheet" href="/resources/fancybox/fancybox.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	
+	<script src="/javascripts/main.js?20150826002510" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+   
+      _gaq.push(['_setAccount', 'UA-50526189-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <a href="/fr/2013/10/30/raspcopter-pid"><div class="flag">Lire en français</div></a>
+
+
+
+<div id="universe">
+	
+	<div id="header">
+		<div id="title">
+			<a href="/blog.html">blog</a>
+		</div>
+		<div id="navigation">
+			<a href="/">About me</a>
+			<a href="/blog.html" class="selected">Blog</a>
+		</div>
+		<div class="clear"></div>
+	</div>
+	
+	<div class="post-world">
+		<div class="post-item">
+			<div class="post-meta">
+			    <p class="date"><i>30</i><b>Oct</b></p>
+			</div>
+
+			<h1 class="post-title">
+				Raspcopter - PID (Proportional Integral Derivative) controller
+				<div class="post-title-sub">
+                    written by Florent Revest in 2013
+				</div>
+			</h1>
+
+			<div class="post-content">
+				<p><img src="http://pix.toile-libre.org/upload/original/1386360951.jpg" style="width: 100%; height: auto;"></img></p>
+
+<p>In the previous article, we started studying a quadcopter flight system. The first step was to recover the attitude, that is to say the angular position of the drone in the air. Today we want to exploit these angle measurements in order to stabilize the quadcopter around values specified by the ground control station.</p>
+
+<h1>What we want</h1>
+
+<p>While it is true that the drone must be able to remain parallel to the ground when no command is received, it also must know how to rotate on its axis in order to move. These rotations are specified by the "ground control station", a software running on a laptop and processing the data of a joystick. The joystick position reflects a desired angle which is the transported by WiFi and interepreted by the Raspberry Pi.</p>
+
+<p>We would like to have a fluid flight despite the sudden changes in position of the joystick, while keeping control on the more or less aggressive engines response.</p>
+
+<h1>What we have</h1>
+
+<p>When the quadcopter confronts the three Euler angles measured by the accelerometer as seen in the previous article and the desired angles sent by the ground station, the difference between these two data produce a sudden <em>error</em>. If the engine speed is changed at the same time as the occurence of the error, such as as the square wave graph below: The powerful and sudden impulse risks at best to exceed the desired angle and go back indefinitely creating instability, at worst to overthrow the quadcopter immediately. It is therefore understandable that it is necessary to have an algorithm "smoothing" the transitions.</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1381347244.jpg"></img></center>
+
+
+<h1>How can we get from what we have to what we want ?</h1>
+
+<p>This problem is pervasive in engineering and requires the use of a "regulator", we will discuss and use the PID controller (for Proportional, Integral, Derivative).</p>
+
+<p>In our quadcopter project, measurements being made on three angles, it is necessary to use three different PID controllers. This algorithm takes as input the difference between the desired angle and the measured angle, for example when the ground sends nothing this error is the orientation of the UAV relative to the ground. Mathematical operations are applied to these errors and determine the speed that should be given to the four motors.</p>
+
+<p><em>The PID controller is an algorithm that takes an error as its input and returns a linear combination of this error with the integral of this error and the derivative of this error.</em> <strong>That's it.</strong></p>
+
+<p>One quickly sees the benefits of this algorithm: first it is very simple to understand and implement. But we also know that it is extremely reliable, this controller is the most used in the world and is found everywhere... even in the flush of your toilet !</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1386350513.jpg"></img></center>
+
+
+<h1>Proportional</h1>
+
+<p>The proportional term is obtained very simply by multiplying the error by a constant named "proportional gain". The greater the gain is, the greater the response speed is, but it may be unstable. The smaller the gain is, the more the response speed is "soft" and likely to be ineffective. It is important to find a good intermediate between these two extremes.</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1386351053.png"></img></center>
+
+
+<p>Here we can see that a proportional gain (Kp) that is too large results in a significant overshoot of the desired angle (the blue reference signal).</p>
+
+<h1>Integral</h1>
+
+<p>Unlike a simple proportional control system, the PID controller takes into account the history of angular errors. For this, the integral term is introduced, it is the sum of all the errors accumulated over time multiplied by a constant, the "integral gain" Ki.</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1386353656.png"></img></center>
+
+
+<p>The integral gain directly affects the height (and therefore the number) of the target value overshoots. Too low gain is problematic in certain situations such as when the wind is too strong. However a too high gain causes an oscilation around the desired angle.</p>
+
+<h1>Derivative</h1>
+
+<p>The derivative term is sometimes called "accelerator" since it can compress the response time. It is obtained by substracting the current and previous errors multiplied by the derivative gain. This term, however, is to be taken lightly because it is very sensitive to data noise.</p>
+
+<center><img src="http://pix.toile-libre.org/upload/original/1386353681.png"></img></center>
+
+
+<p>Once is not a custom, chart allows us to better understand the impact of the gain.</p>
+
+<h1>And then ?</h1>
+
+<p>Once the code of the PID controller implemented (the very simple PID class is available on github) it is to determine the three gains of each controller. As every quadcopter has special features, there is no universal PID constants, however the determination of these values is not random either.</p>
+
+<p>First, it should be noted that a rapid determination method, called "Ziegler and Nichols method" exists and provides correct Ki and Kd from the only value of Kp. The gains can then be adjusted more precisely based on parameters seen above.</p>
+
+<p>Moreover, a quadcopter (unlike a tricopter of Hexacopter) is almost symmetrical, so the pitch and roll PID's gains should be similar.</p>
+
+<p>Finally, it is important to note that for security reasons the testing of these PIDs is never done in real conditions outside. By firmly hanging the quadcopter to a bar parallel to an axis of rotation, we are able to block the rotation of the other angles and work on one PID at a time.</p>
+
+<h1>Sources</h1>
+
+<ul>
+<li><a href="http://aeroquad.com/showwiki.php?title=A+Guide+To+Proportional+Integral+and+Derivative+PID+Control">A Guide To Proportional Integral and Derivative Control (PID)</a></li>
+<li><a href="http://wiki.openpilot.org/pages/viewpage.action?pageId=21857142">PID régulateur ? Comment ça marche ?</a></li>
+<li><a href="http://en.wikipedia.org/wiki/PID_controller">PID controller - Wikipédia</a></li>
+<li><a href="http://blog.oscarliang.net/quadcopter-pid-explained-tuning/">Quadcopter PID Explained and Tuning</a></li>
+<li><a href="http://blog.pistuffing.co.uk/?p=1314">PID Tuning, how "I did it my way"</a></li>
+<li><a href="http://aeroquad.com/showwiki.php?title=PID+Tuning">PID Tuning</a></li>
+<li><a href="http://wiki.openpilot.org/display/Doc/Stabilization+Tuning++Multirotor">Stabilization Tuning Multirotor</a></li>
+<li><a href="http://www-hadoc.lag.ensieg.inpg.fr/hadoc/ateliers/reglageEmpCorr/ReglEmpCorrAide.html">AIDE: réglage empirique des correcteurs</a></li>
+</ul>
+
+
+			</div>
+			
+			<div class="post-comments">
+                <div id="disqus_thread"></div><script type="text/javascript" src="http://florentrevest.disqus.com/embed.js"></script><noscript><a href="http://florentrevest.disqus.com/?url=ref">See comments.</a></noscript>
+			</div>
+		</div>
+	</div>
+	
+	<div class="sidebar">
+	<div class="about-me">
+		<h1>&nbsp;</h1>
+		<img class="avatar" src="http://gravatar.com/avatar/bdd848257fce7eb848b301b2ee6e0f9e.jpg?s=50" alt="" />
+		<div class="description">
+			<p>
+                Computer science student at INSA Toulouse, I'm crazy about programming and free softwares.
+                <br><br>
+                <i class="fa fa-envelope-square fa-fw"></i><td><script type="text/javascript">document.write("<n uers=\"znvygb:erirfgsyb@tznvy.pbz\">erirfgsyb@tznvy.pbz</n>".replace(/[a-zA-Z]/g, function(c){return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);}));</script></td>
+                <i class="fa fa-github-square fa-fw"></i><a href="https://github.com/FlorentRevest">GitHub</a>
+                <i class="fa fa-linkedin-square fa-fw"></i><a href="https://fr.linkedin.com/pub/florent-revest/bb/842/653">LinkedIn</a> <br>
+                <i class="fa fa-twitter-square fa-fw"></i><a href="https://twitter.com/xenon132">Twitter</a>
+                <i class="fa fa-flickr fa-fw"></i><a href="https://www.flickr.com/photos/florent_revest/">Flickr</a>
+                <i class="fa fa-pencil-square fa-fw"></i><a href="irc://kido@irc.freenode.net">kido@irc.freeenode.net</a>
+                <br><br>
+		    </p>
+	    </div>
+	<div class="section recent-articles">
+		<h2>Recent Articles</h2>
+		<dl class="labels">
+			
+				<dt>02 Jul</dt>
+				<dd><a href="/2014/07/02/raspcopter-new-pid-test-rig" class="title">Raspcopter - New test rig for the PID tuning</a></dd>
+			
+				<dt>25 Jun</dt>
+				<dd><a href="/2014/06/25/raspcopter-first-fly-video" class="title">Raspcopter - Video of the first PID tuning tests</a></dd>
+			
+				<dt>20 May</dt>
+				<dd><a href="/2014/05/20/raspcopter-pid-crash" class="title">Raspcopter - First crash</a></dd>
+			
+				<dt>30 Apr</dt>
+				<dd><a href="/2014/04/30/raspcopter-network" class="title">Raspcopter - Network communication</a></dd>
+			
+				<dt>20 Feb</dt>
+				<dd><a href="/2014/02/20/raspcopter-ground-control-station" class="title">Raspcopter - Ground Control Station</a></dd>
+			
+				<dt>15 Dec</dt>
+				<dd><a href="/2013/12/15/raspcopter-first-video" class="title">Raspcopter - First Video</a></dd>
+			
+				<dt>16 Nov</dt>
+				<dd><a href="/2013/11/16/raspcopter-motors" class="title">Raspcopter - Engines control</a></dd>
+			
+				<dt>30 Oct</dt>
+				<dd><a href="/2013/10/30/raspcopter-pid" class="title">Raspcopter - PID (Proportional Integral Derivative) controller</a></dd>
+			
+			<dt>&nbsp;</dt>
+			<dd><a href="/archive.html">See more &rarr;</a></dd>
+		</dl>
+	</div>
+</div>
+
+<div class="clear"></div>
+
+	
+</div>
+
+</body>
+</html>
+
