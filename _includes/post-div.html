@@ -4,7 +4,7 @@
 	</div>
 
 	<h1 class="post-title">
-        <a href="{{ page.url }}/">{{ page.title }}</a>
+        <a href="{{ page.url }}">{{ page.title }}</a>
 		<div class="post-title-sub">
             written by Florent Revest in {{ page.date | date: "%Y" }}
 		</div>
@@ -14,5 +14,5 @@
         {{ page.content | truncate: 1000 }}
 	</div>
 
-    <a href="{{ page.url }}/">Read more...</a>
+    <a href="{{ page.url }}">Read more...</a>
 </div>
