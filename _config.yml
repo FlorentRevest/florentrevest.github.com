@@ -1,0 +1,6 @@
+markdown: rdiscount
+gems: [jekyll-paginate]
+permalink: /:year/:month/:day/:title
+paginate: 8
+highlighter: pygments
+lsi: false
