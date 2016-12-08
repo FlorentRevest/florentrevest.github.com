@@ -73,9 +73,9 @@ Community is an important part of this project, therefore I would like to give s
 * **Emilia Wojnicka**, *bebechiyo*, for her work on the UI and UX
 * **Daniel Cordero**, *TheAppleMan*, for his work on the LG G Watch Urbane, the overall porting process and the continuous integration
 * **Larson Thorpe**, *Lrs121*, for his work on the Asus ZenWatch 2 and on the xda forum
-* **Sylvia Van Os**, *SylvieLorxu*, for her work on i18n, watchfaces, F-Droid and bugfixes
+* **Sylvia van Os**, *SylvieLorxu*, for her work on i18n, watchfaces, F-Droid and bugfixes
 * **Aleksi Suomalainen**, *locusf*, for his work on Glacier, the Asus ZenWatch 1 and the Sony Smartwatch 3
-* **Julius Jann**, *Nokius*, for having supported my travel at FOSDEM and for his work on wallpapers and continuous integration
+* **Julius-Paul Jann**, *Nokius*, for having supported my travel at FOSDEM and for his work on wallpapers and continuous integration
 * **Tim Suberkrub**, *suebt*, for his work on qml-asteroid and asteroid-stopwatch
 * **Carsten Munk**, *Stskeeps*, for having made this whole project possible via libhybris and for his very strong support along the way
 * **Andrea Bernabei**, *faenil*, for his work on Glacier
