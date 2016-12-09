@@ -39,8 +39,8 @@ AsteroidOS can be ported to many smartwatches and [new port contributions](https
 
 * **LG G Watch**: *(dory)* Default development platform, benefits from the best support
 * **LG G Watch Urbane**: *(bass)* Well supported but Bluetooth doesn't work yet
-* **Asus ZenWatch 2**: *(tetra)* Good support but Bluetooth doesn't work yet either
-* **Sony Smartwatch 3**: *(sparrow)* Still has some graphic glitches and no Bluetooth
+* **Asus ZenWatch 2**: *(sparrow)* Good support but Bluetooth doesn't work yet either
+* **Sony Smartwatch 3**: *(tetra)* Still has some graphic glitches and no Bluetooth
 
 <img src="{{ site.url }}/assets/2016-12-07-apps-screenshots.jpg" style="width: 100%; height: auto;">
 
