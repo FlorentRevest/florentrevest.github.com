@@ -1,17 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="author" content="Florent Revest" />
 
 	<title>{{ page.title }}</title>
-	<meta name="author" content="Florent Revest" />
-	
+
+    <link rel="icon" type="image/x-icon" class="js-site-favicon" href="/favicon.ico"/>	
 	<link rel="stylesheet" href="/stylesheet.css?{{ site.time | date: "%Y%m%d%H%M%S"}}" type="text/css" media="screen" title="no title" charset="utf-8" />
-	<link rel="stylesheet" href="/resources/fancybox/fancybox.css" type="text/css" media="screen" title="no title" charset="utf-8">
 	
-	<script src="/javascripts/main.js?{{ site.time | date: "%Y%m%d%H%M%S"}}" type="text/javascript" charset="utf-8"></script>
+
+	<script src="/assets/js/ls.bgset.js" async=""></script>
+	<script src="/assets/js/ls.object-fit.js" async=""></script>
+	<script src="/assets/js/ls.parent-fit.js" async=""></script>
+	<script src="/assets/js/ls.respimg.js" async=""></script>
+	<script src="/assets/js/lazysizes.min.js" async=""></script>
     <script type="text/javascript">
       var _gaq = _gaq || [];
    
@@ -24,7 +28,7 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
     </script>
+
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
-
 <body>

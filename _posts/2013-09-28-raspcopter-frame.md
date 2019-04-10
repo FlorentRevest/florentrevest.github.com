@@ -3,7 +3,7 @@ layout: post
 title: Raspcopter - Frame building
 ---
 
-<a href="http://pix.toile-libre.org/upload/original/1380366834.jpg"><img src="http://pix.toile-libre.org/upload/original/1380366834.jpg" style="width: 100%; height: auto;"></img></a>
+<a href="http://pix.toile-libre.org/upload/original/1380366834.jpg"><img src="http://pix.toile-libre.org/upload/original/1380366834.jpg" style="width: 100%; height: auto;"/></a>
 
 After two months of unbearable waiting, the package of the quadcopter parts ordered from HobbyKing was finally delivered. I started to build the X525 v3 frame with the Brushless motors FC 28-22 Outrunner 1200kv. I may flash the ESC 20A UBEC HobbyKing with the famous SimonK firmware before soldering the engines (however the procedure is delicate so uncertain). This whole assembly phase that is common to all quadcopters is already well documented, so I won't detail those steps on this blog.
 

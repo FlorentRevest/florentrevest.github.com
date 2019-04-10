@@ -1,25 +1,13 @@
 {% include _head.html %}
 
 <div id="universe">
-	
-	<div id="header">
-		<div id="title">
- 			<a href="/">Florent Revest</a>
-		</div>
-		<div id="navigation">
-			<a href="/">About me</a>
-			<a href="/articles.html" class="selected">Articles</a>
-			<a href="/revest-florent-resume.pdf">Resume</a>
-		</div>
-		<div class="clear"></div>
-	</div>
-	
+    {% include navigation.html %}
+
 	<div class="post-world">
-		{{ content }}
+        {% for page in site.posts %}
+            {% include post-div.html %}
+        {% endfor %}
 	</div>
-	
-	{% include paginator.html %}
-	
 </div>
 
 {% include _foot.html %}

@@ -3,7 +3,7 @@ layout: post
 title: Raspcopter - Attitude measurement
 ---
 
-<img src="http://pix.toile-libre.org/upload/original/1380988375.jpg" style="width: 100%; height: auto;"></img>
+<img src="http://pix.toile-libre.org/upload/original/1380988375.jpg" style="width: 100%; height: auto;"/>
 
 I inaugurate today the suite of technical articles about my Raspcopter project by starting as promised with the attitude.
 
@@ -16,7 +16,7 @@ It is therefore essential to create a flight system dependent on the attitude of
 
 So we need three Euler angles which are named: yaw, pitch and roll.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1380985932.jpg"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1380985932.jpg"/></center>
 
 What we have
 ============
@@ -30,7 +30,7 @@ Many sensors allow to obtain the attitude of the system :
 
 They all have their advantages and disadvantages. They are never used alone, always combined. By constraints of money and time, my project will only use the first two sensors. The MPU6050 of Invensense brings them together in a single chip, this is called an IMU (Inertial Measurement Unit) with six degrees of freedom. The MPU6050 is also inexpensive and often used by quadcopter projects.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1380986384.jpg" style="width: 100px; height: auto;"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1380986384.jpg" style="width: 100px; height: auto;"/></center>
 
 This chip is connected to the Raspberry Pi's GPIO via the i2c standard with four wires (SDA, SCL, Ground and 3.3V). So it is first necessary to remove the i2c driver from the Raspbian's modprobe's blacklist.
 
@@ -45,18 +45,18 @@ The heart of the problem lies in the passage of the raw values of the MPU6050 to
 - Secondly, they do not have any unit, these value do not match anything tangible.
 - Finally, those acceleration and rotation data are not combined into three angles as we wish.
 
-<img src="http://pix.toile-libre.org/upload/original/1380986108.png" style="width: 100%; height: auto;"></img>
+<img src="http://pix.toile-libre.org/upload/original/1380986108.png" style="width: 100%; height: auto;"/>
 
 A Kalman filter is often used to stabilize values, but its implementation is pretty complex and costs some CPU time.
 
 A much lighter and easy solution would be to create a complementary filter, using the formula :
 
-<center><img src="http://pix.toile-libre.org/upload/original/1380986043.gif"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1380986043.gif"/></center>
 
 Applied to the roll angles (phi) and pitch (rho) calculated by
 
-<center><img src="http://pix.toile-libre.org/upload/original/1380985903.png"></img></center>
-<center><img src="http://pix.toile-libre.org/upload/original/1380985892.png"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1380985903.png"/></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1380985892.png"/>></center>
 
 This formula gives much more weight to the gyro's values as it takes into account the fact that the gyro measurements are stable in the short term but have a "drift" (a shift that occurs with time) over the long term (ie. returning twice in a row a gyroscope wouldn't return the same value). The accelerometer's value measures plenty of forces other than gravity so they have a lot of noise but are much more stable over the long term. This formula isn't totally efficient either.
 
@@ -71,7 +71,7 @@ The Problem with Euler angles
 
 A final problem is remaining : if the Euler angles describe all the possibilites of angular positions, they are not immune to a "gimbal lock". This problem happens when two gyro axes point in the same direction, the system loses a degree of freedom and pursues an unpredictable movement. This problem seems trivial but it could have stopped the Apollo 11 mission, we will only retain a quote from Michael Collins "How about sending me a fourth gimbal for Christmas ?"
 
-<center><img src="http://pix.toile-libre.org/upload/original/1380985991.gif"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1380985991.gif"/></center>
 
 The solution, when one does not believe in Santa Claus, would be to use Quaternions, hypercomplex numbers made of a linear combination of four parameters, three of which define an axis and the last sets a rotation around this axis. The handling of this set seems too complex for a 16 year old boy, so I will stick to Euler Angles.
 

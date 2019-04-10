@@ -20,7 +20,7 @@ Several core values led the development of AsteroidOS:
 * **Modularity**: Allowing the user to tweak the OS in depth
 * **Interoperability**: Communicating flawlessly with other devices
 
-<img src="{{ site.url }}/assets/2016-12-07-launcher-screenshots.jpg" style="width: 100%; height: auto;">
+<img src="{{ site.url }}/assets/images/articles/2016-12-07-launcher-screenshots.jpg" style="width: 100%; height: auto;">
 
 A platform
 ==========
@@ -42,7 +42,7 @@ AsteroidOS can be ported to many smartwatches and [new port contributions](https
 * **Asus ZenWatch 2**: *(sparrow)* Good support but Bluetooth doesn't work yet either
 * **Sony Smartwatch 3**: *(tetra)* Still has some graphic glitches and no Bluetooth
 
-<img src="{{ site.url }}/assets/2016-12-07-apps-screenshots.jpg" style="width: 100%; height: auto;">
+<img src="{{ site.url }}/assets/images/articles/2016-12-07-apps-screenshots.jpg" style="width: 100%; height: auto;">
 
 A Story
 =======
@@ -54,7 +54,7 @@ Despite its early status and lack of official releases so far, AsteroidOS has al
 
 More recently, I've also been working with Jolla on a [demonstration of their Sailfish technologies running on top of AsteroidOS](https://blog.jolla.com/watch/). This has been a very interesting collaboration on both technical and community levels and I'm deeply interested in strengthening the links between our projects.
 
-<img src="{{ site.url }}/assets/2016-12-07-conferences.jpg" style="width: 100%; height: auto;">
+<img src="{{ site.url }}/assets/images/articles/2016-12-07-conferences.jpg" style="width: 100%; height: auto;">
 
 A Future
 ========
@@ -64,7 +64,7 @@ On a purely technical side, my main goals for the platform are: expanding batter
 
 I'm also looking forward to collaborating with more companies interested in using AsteroidOS technologies in demos or products and can be contacted at any time.
 
-<img src="{{ site.url }}/assets/2016-12-07-other-screenshots.jpg" style="width: 100%; height: auto;">
+<img src="{{ site.url }}/assets/images/articles/2016-12-07-other-screenshots.jpg" style="width: 100%; height: auto;">
 
 Acknowledgements
 ================

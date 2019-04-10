@@ -1,31 +1,11 @@
 {% include _head.html %}
 
 <div id="universe">
-	
-	<div id="header">
-		<div id="title">
-			<a href="/">Florent Revest</a>
-		</div>
-		<div id="navigation">
-			<a href="/">About me</a>
-			<a href="/articles.html" class="selected">Articles</a>
-			<a href="/revest-florent-resume.pdf">Resume</a>
-		</div>
-		<div class="clear"></div>
-	</div>
+    {% include navigation.html %}
 	
 	<div class="post-world">
 		<div class="post-item">
-			<div class="post-meta">
-			    <p class="date">{{ page.date | date: "<i>%d</i><b>%b</b>" }}</p>
-			</div>
-
-			<h1 class="post-title">
-				{{ page.title }}
-				<div class="post-title-sub">
-                    written by Florent Revest in {{ page.date | date: "%Y" }}
-				</div>
-			</h1>
+            {% include post-header.html %}
 
 			<div class="post-content">
 				{{ content }}
@@ -33,7 +13,5 @@
 		</div>
 	</div>
 </div>
-
-{% include signature.html %}
 
 {% include _foot.html %}

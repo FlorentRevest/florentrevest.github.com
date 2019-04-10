@@ -1,22 +1,33 @@
 {% include _head.html %}
 
-<div id="universe">
+<div class="sections">
+  {% for section in page.section %}
+    {% capture data_bgset %}{{ site.url }}/assets/images/section-bg/{{ section.image }}-320.jpg 320w, {{ site.url }}/assets/images/section-bg/{{ section.image }}-768.jpg 768w, {{ site.url }}/assets/images/section-bg/{{ section.image }}-1024.jpg 1024w, {{ site.url }}/assets/images/section-bg/{{ section.image }}.jpg 1920w{% endcapture %}
 
-	<div id="header">
-		<div id="navigation">
-			<a href="/" class="selected">About me</a>
-			<a href="/articles.html">Articles</a>
-			<a href="/revest-florent-resume.pdf">Resume</a>
-		</div>
-		<div class="clear"></div>
-	</div>
+    <div class="section section__{{ forloop.index }}">
+      <div class="section__image lazyload" data-bgset="{{ data_bgset }}" data-sizes="auto"/></div>
+      <div class="inner">
+        <div class="section__text">
+          <div class="section__title">
+            <h2 class="heading"><span>{{ section.title | markdownify | remove: '<p>' | remove: '</p>' }}</span></h2>
+          </div>
+          {% if section.introduction %}
+            <div class="section__more">
+              {{ section.introduction | markdownify }}
+            </div>
+          {% endif %}
 
-	<div class="home-world">
-        {{ content }}
-	</div>
-
-
-
+          {% if section.social %}
+            <ul class="section__social">
+              {% for social in section.social %}
+                <li><a href="{{ social.url }}"><i class="fa fa-{{ social.icon }} fa-fw"></i></a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 </div>
 
 {% include _foot.html %}

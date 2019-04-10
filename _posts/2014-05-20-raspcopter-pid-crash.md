@@ -3,7 +3,7 @@ layout: post
 title: Raspcopter - First crash
 ---
 
-<img src="http://pix.toile-libre.org/upload/original/1404331500.png" style="width: 100%; height: auto;"></img>
+<img src="http://pix.toile-libre.org/upload/original/1404331500.png" style="width: 100%; height: auto;"/>
 
 The project progresses! Indeed, the code base is almost finished, logging functions are expected to come later but this is not a priority for now. This means that the rather technical articles that I have written so far should now let room for a serie of more practical, visual and general-public-oriented articles. But as we can suspect, the transition from theory to practice is always accompanied by small unexpected effects.
 

@@ -2,7 +2,7 @@
 layout: post
 title: Raspcopter - PID (Proportional Integral Derivative) controller
 ---
-<img src="http://pix.toile-libre.org/upload/original/1386360951.jpg" style="width: 100%; height: auto;"></img>
+<img src="http://pix.toile-libre.org/upload/original/1386360951.jpg" style="width: 100%; height: auto;"/>
 
 In the previous article, we started studying a quadcopter flight system. The first step was to recover the attitude, that is to say the angular position of the drone in the air. Today we want to exploit these angle measurements in order to stabilize the quadcopter around values specified by the ground control station.
 
@@ -18,7 +18,7 @@ What we have
 
 When the quadcopter confronts the three Euler angles measured by the accelerometer as seen in the previous article and the desired angles sent by the ground station, the difference between these two data produce a sudden *error*. If the engine speed is changed at the same time as the occurence of the error, such as as the square wave graph below: The powerful and sudden impulse risks at best to exceed the desired angle and go back indefinitely creating instability, at worst to overthrow the quadcopter immediately. It is therefore understandable that it is necessary to have an algorithm "smoothing" the transitions.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1381347244.jpg"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1381347244.jpg"/></center>
 
 How can we get from what we have to what we want ?
 ==================================================
@@ -31,14 +31,14 @@ In our quadcopter project, measurements being made on three angles, it is necess
 
 One quickly sees the benefits of this algorithm: first it is very simple to understand and implement. But we also know that it is extremely reliable, this controller is the most used in the world and is found everywhere... even in the flush of your toilet !
 
-<center><img src="http://pix.toile-libre.org/upload/original/1386350513.jpg"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1386350513.jpg"/></center>
 
 Proportional
 ============
 
 The proportional term is obtained very simply by multiplying the error by a constant named "proportional gain". The greater the gain is, the greater the response speed is, but it may be unstable. The smaller the gain is, the more the response speed is "soft" and likely to be ineffective. It is important to find a good intermediate between these two extremes.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1386351053.png"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1386351053.png"/></center>
 
 Here we can see that a proportional gain (Kp) that is too large results in a significant overshoot of the desired angle (the blue reference signal).
 
@@ -47,7 +47,7 @@ Integral
 
 Unlike a simple proportional control system, the PID controller takes into account the history of angular errors. For this, the integral term is introduced, it is the sum of all the errors accumulated over time multiplied by a constant, the "integral gain" Ki.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1386353656.png"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1386353656.png"/></center>
 
 The integral gain directly affects the height (and therefore the number) of the target value overshoots. Too low gain is problematic in certain situations such as when the wind is too strong. However a too high gain causes an oscilation around the desired angle.
 
@@ -56,7 +56,7 @@ Derivative
 
 The derivative term is sometimes called "accelerator" since it can compress the response time. It is obtained by substracting the current and previous errors multiplied by the derivative gain. This term, however, is to be taken lightly because it is very sensitive to data noise.
 
-<center><img src="http://pix.toile-libre.org/upload/original/1386353681.png"></img></center>
+<center><img src="http://pix.toile-libre.org/upload/original/1386353681.png"/></center>
 
 Once is not a custom, chart allows us to better understand the impact of the gain.
 

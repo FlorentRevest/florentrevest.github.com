@@ -1,14 +1,5 @@
 <div class="post-item">
-	<div class="post-meta">
-	    <p class="date">{{ page.date | date: "<i>%d</i><b>%b</b>" }}</p>
-	</div>
-
-	<h1 class="post-title">
-        <a href="{{ page.url }}">{{ page.title }}</a>
-		<div class="post-title-sub">
-            written by Florent Revest in {{ page.date | date: "%Y" }}
-		</div>
-	</h1>
+    {% include post-header.html %}
 
 	<div class="post-content">
         {{ page.content | truncate: 1000 }}

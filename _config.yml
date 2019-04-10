@@ -1,5 +1,2 @@
-gems: [jekyll-paginate]
 permalink: /:year/:month/:day/:title
-paginate: 8
-highlighter: rouge
-lsi: false
+url: "https://florentrevest.github.io/"

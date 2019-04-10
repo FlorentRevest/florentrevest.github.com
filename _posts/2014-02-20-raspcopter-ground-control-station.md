@@ -3,7 +3,7 @@ layout: post
 title: Raspcopter - Ground Control Station
 ---
 
-<img src="http://pix.toile-libre.org/upload/original/1399577554.jpg" style="width: 100%; height: auto;"></img>
+<img src="http://pix.toile-libre.org/upload/original/1399577554.jpg" style="width: 100%; height: auto;"/>
 
 The network is a very big piece that delays the project quite a lot without necessarily visible results, so today we will talk briefly about the Ground Control Station PC software. This article is not intended to be as technical as the previous, but only informative.
 
